@@ -1,4 +1,5 @@
 import React from "react";
+import PriceHistoryChart from "@/components/ProductChart/ProductChart";
 
 const Page = () => {
   return (
@@ -56,10 +57,7 @@ const Page = () => {
             {/* Price History */}
             <div className="card bg-base-100 shadow-xl">
               <div className="card-body">
-                <h3 className="card-title text-lg">Price History</h3>
-                <div className="h-64 flex items-center justify-center border-2 border-dashed rounded-md text-gray-400">
-                  [Price History Chart Here]
-                </div>
+                <PriceHistoryChart />
                 <p className="text-xs text-gray-400 mt-3">
                   (Integrate chart library like Recharts / Chart.js when
                   converting to React)
