@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 const Card = () => {
   return (
@@ -16,9 +17,11 @@ const Card = () => {
         <p className="text-xs text-gray-400">Last checked: 5 min ago</p>
 
         <div className="mt-3 flex gap-2">
-          <button className="btn btn-sm bg-indigo-600 text-white hover:bg-indigo-700">
-            View Details
-          </button>
+          <Link href="/products/1">
+            <button className="btn btn-sm bg-indigo-600 text-white hover:bg-indigo-700">
+              View Details
+            </button>
+          </Link>
           <button className="btn btn-sm border text-gray-600 hover:bg-gray-50">
             Edit
           </button>

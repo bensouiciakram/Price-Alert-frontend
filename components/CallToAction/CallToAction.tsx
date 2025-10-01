@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const CallToAction = () => {
@@ -12,9 +13,11 @@ const CallToAction = () => {
             Add products from Amazon, eBay, or any store. Get instant alerts
             when prices drop below your target.
           </p>
-          <button className="mt-6 btn btn-soft rounded-lg text-primary font-bold bg-white hover:bg-gray-200 px-8">
-            Start Monitoring
-          </button>
+          <Link href="/products/add-product">
+            <button className="mt-6 btn btn-soft rounded-lg text-primary font-bold bg-white hover:bg-gray-200 px-8">
+              Start Monitoring
+            </button>
+          </Link>
         </div>
       </div>
     </div>

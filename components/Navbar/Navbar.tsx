@@ -1,5 +1,6 @@
 import React from "react";
 import { CiMenuBurger } from "react-icons/ci";
+import Link from "next/link";
 
 const Navbar = () => {
   return (
@@ -16,19 +17,37 @@ const Navbar = () => {
           </summary>
           <ul className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
             <li>
-              <a>Item 1</a>
+              <Link href="/dashboard">Dashboard</Link>
             </li>
             <li>
-              <a>Item 2</a>
+              <Link href="/products/alerts">Alerts</Link>
+            </li>
+            <li>
+              <Link href="/products">Products</Link>
+            </li>
+            <li>
+              <Link href="/settings">Settings</Link>
+            </li>
+            <li>
+              <Link href="/logout">Logout</Link>
             </li>
           </ul>
         </details>
         <ul className="menu menu-horizontal px-1 max-md:hidden">
           <li>
-            <a>Link</a>
+            <Link href="/dashboard">Dashboard</Link>
           </li>
           <li>
-            <a>Link</a>
+            <Link href="/products/alerts">Alerts</Link>
+          </li>
+          <li>
+            <Link href="/products">Products</Link>
+          </li>
+          <li>
+            <Link href="/settings">Settings</Link>
+          </li>
+          <li>
+            <Link href="/logout">Logout</Link>
           </li>
         </ul>
       </div>
