@@ -2,27 +2,30 @@ import React from "react";
 
 const page = () => {
   return (
-    <div className="bg-gray-50 flex items-center justify-center h-screen">
-      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center text-indigo-600 mb-6">
-          Enter Demo Token
-        </h2>
-        <form>
-          <input
-            type="text"
-            placeholder="Enter your token"
-            className="w-full p-3 border rounded-lg mb-4 focus:ring focus:ring-indigo-300"
-          />
-          <button
-            type="submit"
-            className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700"
-          >
-            Login
-          </button>
-        </form>
-        <p className="mt-4 text-sm text-gray-500 text-center">
-          Token will expire after a limited time.
-        </p>
+    <div className="bg-base-200 flex items-center justify-center min-h-screen px-4 sm:px-6">
+      <div className="card w-full max-w-md shadow-xl bg-base-100">
+        <div className="card-body">
+          <h2 className="card-title justify-center text-primary text-xl sm:text-2xl mb-6">
+            Enter Demo Token
+          </h2>
+
+          <form className="form-control gap-4">
+            <div className="mb-4">
+              <input
+                type="text"
+                placeholder="Enter your token"
+                className="input input-bordered w-full"
+              />
+            </div>
+            <button type="submit" className="btn btn-primary w-full">
+              Login
+            </button>
+          </form>
+
+          <p className="mt-4 text-xs sm:text-sm text-center text-gray-500">
+            Token will expire after a limited time.
+          </p>
+        </div>
       </div>
     </div>
   );
