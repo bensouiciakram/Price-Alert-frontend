@@ -3,29 +3,6 @@ import React from "react";
 const Page = () => {
   return (
     <div className="bg-base-200 text-base-content min-h-screen">
-      {/* Header */}
-      <header className="navbar bg-base-100 shadow-sm px-6">
-        <div className="flex-1">
-          <a className="btn btn-ghost text-xl text-primary font-bold">
-            Price Monitor
-          </a>
-        </div>
-        <nav className="flex gap-4">
-          <a href="dashboard.html" className="link link-hover">
-            Dashboard
-          </a>
-          <a href="alerts.html" className="link link-hover">
-            Alerts
-          </a>
-          <a href="settings.html" className="link link-hover">
-            Settings
-          </a>
-          <a href="login.html" className="link link-hover">
-            Logout
-          </a>
-        </nav>
-      </header>
-
       {/* Main */}
       <main className="max-w-3xl mx-auto py-12 px-4">
         <div className="card bg-base-100 shadow-xl">

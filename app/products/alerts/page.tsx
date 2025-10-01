@@ -3,26 +3,6 @@ import React from "react";
 const page = () => {
   return (
     <div className="bg-gray-50 text-gray-900 min-h-screen">
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
-          <h1 className="text-xl font-bold text-indigo-600">Price Monitor</h1>
-          <nav className="space-x-6 text-sm font-medium">
-            <a href="dashboard.html" className="hover:text-indigo-600">
-              Dashboard
-            </a>
-            <a href="alerts.html" className="hover:text-indigo-600">
-              Alerts
-            </a>
-            <a href="settings.html" className="hover:text-indigo-600">
-              Settings
-            </a>
-            <a href="login.html" className="hover:text-indigo-600">
-              Logout
-            </a>
-          </nav>
-        </div>
-      </header>
-
       <main className="max-w-7xl mx-auto py-12 px-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Alerts</h2>
