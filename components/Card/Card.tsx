@@ -2,18 +2,27 @@ import React from "react";
 
 const Card = () => {
   return (
-    <div className="card w-full max-w-sm sm:max-w-md lg:max-w-lg bg-base-100 shadow-md rounded-xl mx-auto">
-      <div className="card-body p-4 sm:p-6">
-        <h2 className="card-title text-lg sm:text-xl lg:text-2xl">
+    <div className="card w-full max-w-sm bg-white shadow-md rounded-xl mx-auto hover:shadow-lg transition">
+      <div className="card-body p-5">
+        <h2 className="card-title text-lg sm:text-xl font-bold">
           PlayStation 5
         </h2>
-        <h3 className="text-sm sm:text-base text-gray-500">Amazon</h3>
-        <p className="text-primary text-xl sm:text-2xl lg:text-3xl font-bold mt-2">
+        <h3 className="text-sm text-gray-500">Amazon</h3>
+
+        <p className="text-green-600 text-xl sm:text-2xl font-bold mt-2">
           $499
         </p>
-        <p className="text-xs sm:text-sm text-gray-400">
-          Last updated: 5 min ago
-        </p>
+
+        <p className="text-xs text-gray-400">Last checked: 5 min ago</p>
+
+        <div className="mt-3 flex gap-2">
+          <button className="btn btn-sm bg-indigo-600 text-white hover:bg-indigo-700">
+            View Details
+          </button>
+          <button className="btn btn-sm border text-gray-600 hover:bg-gray-50">
+            Edit
+          </button>
+        </div>
       </div>
     </div>
   );

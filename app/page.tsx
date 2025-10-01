@@ -9,7 +9,6 @@ export default function Home() {
   return (
     <>
       <div id="main">
-        <Navbar />
         <CallToAction />
         <DashboardPreview />
         <SignUp />
