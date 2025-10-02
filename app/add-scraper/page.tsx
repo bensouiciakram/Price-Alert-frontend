@@ -1,6 +1,56 @@
+"use client";
+
 import React from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const scraperSchema = z.object({
+  url: z.string().url("Enter a valid URL"),
+  priceXPath: z.string().min(1, "Price XPath is required"),
+  priceRegex: z.string().optional(),
+  titleXPath: z.string().min(1, "Title XPath is required"),
+  titleRegex: z.string().optional(),
+  imageXPath: z.string().min(1, "Image XPath is required"),
+  imageRegex: z.string().optional(),
+  lib: z.enum(["scrapy", "playwright"]),
+});
+
+type ScraperFormValues = z.infer<typeof scraperSchema>;
 
 const Page = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<ScraperFormValues>({
+    resolver: zodResolver(scraperSchema),
+    defaultValues: {
+      url: "",
+      priceXPath: "",
+      priceRegex: "",
+      titleXPath: "",
+      titleRegex: "",
+      imageXPath: "",
+      imageRegex: "",
+      lib: "scrapy",
+    },
+  });
+
+  const onSubmit = async (values: ScraperFormValues) => {
+    console.log("save scraper", values);
+    reset({
+      url: "",
+      priceXPath: "",
+      priceRegex: "",
+      titleXPath: "",
+      titleRegex: "",
+      imageXPath: "",
+      imageRegex: "",
+      lib: "scrapy",
+    });
+  };
   return (
     <div className="bg-base-200 text-base-content min-h-screen">
       {/* Form Section */}
@@ -11,7 +61,7 @@ const Page = () => {
 
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body">
-            <form className="form-control gap-6">
+            <form className="form-control gap-6" onSubmit={handleSubmit(onSubmit)} noValidate>
               {/* Product URL */}
               <div>
                 <label className="label">
@@ -20,8 +70,13 @@ const Page = () => {
                 <input
                   type="url"
                   placeholder="https://example.com/product/123"
-                  className="input input-bordered w-full"
+                  className={`input input-bordered w-full ${errors.url ? "input-error" : ""}`}
+                  aria-invalid={!!errors.url}
+                  {...register("url")}
                 />
+                {errors.url && (
+                  <span className="text-error text-xs mt-1">{errors.url.message}</span>
+                )}
               </div>
 
               {/* Field Group: Price */}
@@ -36,8 +91,13 @@ const Page = () => {
                   <input
                     type="text"
                     placeholder="//*[@id='priceblock_ourprice']"
-                    className="input input-bordered w-full"
+                    className={`input input-bordered w-full ${errors.priceXPath ? "input-error" : ""}`}
+                    aria-invalid={!!errors.priceXPath}
+                    {...register("priceXPath")}
                   />
+                  {errors.priceXPath && (
+                    <span className="text-error text-xs mt-1">{errors.priceXPath.message}</span>
+                  )}
                 </div>
 
                 {/* Price Regex */}
@@ -47,11 +107,12 @@ const Page = () => {
                   </label>
                   <input
                     type="text"
-                    placeholder="[\d.,]+"
+                    placeholder="[\\d.,]+"
                     className="input input-bordered w-full"
+                    {...register("priceRegex")}
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    Use regex to extract only the price (example:{" "}
+                    Use regex to extract only the price (example: {" "}
                     <code>[\d.,]+</code>).
                   </p>
                 </div>
@@ -69,8 +130,13 @@ const Page = () => {
                   <input
                     type="text"
                     placeholder="//h1[@id='productTitle']"
-                    className="input input-bordered w-full"
+                    className={`input input-bordered w-full ${errors.titleXPath ? "input-error" : ""}`}
+                    aria-invalid={!!errors.titleXPath}
+                    {...register("titleXPath")}
                   />
+                  {errors.titleXPath && (
+                    <span className="text-error text-xs mt-1">{errors.titleXPath.message}</span>
+                  )}
                 </div>
 
                 {/* Title Regex */}
@@ -82,6 +148,7 @@ const Page = () => {
                     type="text"
                     placeholder=".*"
                     className="input input-bordered w-full"
+                    {...register("titleRegex")}
                   />
                   <p className="text-xs text-gray-500 mt-1">
                     Use regex to refine the title (leave <code>.*</code> for raw
@@ -102,8 +169,13 @@ const Page = () => {
                   <input
                     type="text"
                     placeholder="//img[@id='main-image']/@src"
-                    className="input input-bordered w-full"
+                    className={`input input-bordered w-full ${errors.imageXPath ? "input-error" : ""}`}
+                    aria-invalid={!!errors.imageXPath}
+                    {...register("imageXPath")}
                   />
+                  {errors.imageXPath && (
+                    <span className="text-error text-xs mt-1">{errors.imageXPath.message}</span>
+                  )}
                 </div>
 
                 {/* Image Regex */}
@@ -115,9 +187,10 @@ const Page = () => {
                     type="text"
                     placeholder="https?://.*"
                     className="input input-bordered w-full"
+                    {...register("imageRegex")}
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    Use regex to validate/clean the image URL (example:{" "}
+                    Use regex to validate/clean the image URL (example: {" "}
                     <code>https?://.*</code>).
                   </p>
                 </div>
@@ -128,10 +201,17 @@ const Page = () => {
                 <label className="label">
                   <span className="label-text">Library Type</span>
                 </label>
-                <select className="select select-bordered w-full">
+                <select
+                  className={`select select-bordered w-full ${errors.lib ? "select-error" : ""}`}
+                  aria-invalid={!!errors.lib}
+                  {...register("lib")}
+                >
                   <option value="scrapy">Scrapy</option>
                   <option value="playwright">Playwright</option>
                 </select>
+                {errors.lib && (
+                  <span className="text-error text-xs mt-1">{errors.lib.message}</span>
+                )}
               </div>
 
               {/* Submit */}
@@ -139,8 +219,9 @@ const Page = () => {
                 <button
                   type="submit"
                   className="btn btn-primary w-full sm:w-auto"
+                  disabled={isSubmitting}
                 >
-                  Save Scraper
+                  {isSubmitting ? "Saving..." : "Save Scraper"}
                 </button>
               </div>
             </form>

@@ -1,6 +1,45 @@
+"use client";
+
 import React from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const addProductSchema = z.object({
+  url: z.string().url("Enter a valid URL"),
+  threshold: z
+    .string()
+    .min(1, "Desired price is required")
+    .refine((v) => !Number.isNaN(Number(v)) && Number(v) > 0, {
+      message: "Enter a valid positive number",
+    }),
+  freq: z.enum(["3600", "14400", "86400"]),
+  name: z.string().optional(),
+});
+
+type AddProductFormValues = z.infer<typeof addProductSchema>;
 
 const Page = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<AddProductFormValues>({
+    resolver: zodResolver(addProductSchema),
+    defaultValues: { url: "", threshold: "", freq: "86400", name: "" },
+  });
+
+  const onSubmit = async (values: AddProductFormValues) => {
+    const payload = {
+      url: values.url,
+      threshold: Number(values.threshold),
+      freq: Number(values.freq),
+      name: values.name?.trim() || undefined,
+    };
+    console.log("submit add product", payload);
+    reset({ url: "", threshold: "", freq: "86400", name: "" });
+  };
   return (
     <div className="bg-base-200 text-base-content min-h-screen">
       {/* Main */}
@@ -13,23 +52,22 @@ const Page = () => {
               periodically and alert you when it drops below your threshold.
             </p>
 
-            <form
-              action="dashboard.html"
-              method="GET"
-              className="form-control gap-4 mt-4"
-            >
+            <form className="form-control gap-4 mt-4" onSubmit={handleSubmit(onSubmit)} noValidate>
               {/* Product URL */}
               <div>
                 <label className="label">
                   <span className="label-text">Product URL</span>
                 </label>
                 <input
-                  name="url"
                   type="url"
-                  required
                   placeholder="https://www.amazon.com/..."
-                  className="input input-bordered w-full"
+                  className={`input input-bordered w-full ${errors.url ? "input-error" : ""}`}
+                  aria-invalid={!!errors.url}
+                  {...register("url")}
                 />
+                {errors.url && (
+                  <span className="text-error text-xs mt-1">{errors.url.message}</span>
+                )}
               </div>
 
               {/* Price + Frequency */}
@@ -39,27 +77,33 @@ const Page = () => {
                     <span className="label-text">Desired Price (USD)</span>
                   </label>
                   <input
-                    name="threshold"
                     type="number"
                     step="0.01"
-                    required
                     placeholder="e.g. 450.00"
-                    className="input input-bordered w-full"
+                    className={`input input-bordered w-full ${errors.threshold ? "input-error" : ""}`}
+                    aria-invalid={!!errors.threshold}
+                    {...register("threshold")}
                   />
+                  {errors.threshold && (
+                    <span className="text-error text-xs mt-1">{errors.threshold.message}</span>
+                  )}
                 </div>
                 <div>
                   <label className="label">
                     <span className="label-text">Check Frequency</span>
                   </label>
                   <select
-                    name="freq"
-                    className="select select-bordered w-full"
-                    defaultValue="86400"
+                    className={`select select-bordered w-full ${errors.freq ? "select-error" : ""}`}
+                    aria-invalid={!!errors.freq}
+                    {...register("freq")}
                   >
                     <option value="3600">Every hour</option>
                     <option value="14400">Every 4 hours</option>
                     <option value="86400">Daily</option>
                   </select>
+                  {errors.freq && (
+                    <span className="text-error text-xs mt-1">{errors.freq.message}</span>
+                  )}
                 </div>
               </div>
 
@@ -69,17 +113,17 @@ const Page = () => {
                   <span className="label-text">Optional: Friendly Name</span>
                 </label>
                 <input
-                  name="name"
                   type="text"
                   placeholder="e.g. My PS5 Alert"
                   className="input input-bordered w-full"
+                  {...register("name")}
                 />
               </div>
 
               {/* Buttons */}
               <div className="flex items-center gap-3 mt-2">
-                <button type="submit" className="btn btn-primary">
-                  Add Product
+                <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                  {isSubmitting ? "Adding..." : "Add Product"}
                 </button>
                 <a href="dashboard.html" className="link link-hover">
                   Cancel
@@ -87,10 +131,7 @@ const Page = () => {
               </div>
             </form>
 
-            <p className="text-xs text-gray-400 mt-4">
-              Note: This demo form redirects to the dashboard. Hook this to your
-              API to actually create a monitor.
-            </p>
+            <p className="text-xs text-gray-400 mt-4">Form includes client-side validation.</p>
           </div>
         </div>
       </main>
