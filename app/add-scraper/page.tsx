@@ -24,16 +24,103 @@ const Page = () => {
                 />
               </div>
 
-              {/* Price XPath */}
-              <div>
-                <label className="label">
-                  <span className="label-text">Price XPath</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="//*[@id='priceblock_ourprice']"
-                  className="input input-bordered w-full"
-                />
+              {/* Field Group: Price */}
+              <div className="grid gap-4">
+                <h3 className="font-semibold">Price Extraction</h3>
+
+                {/* Price XPath */}
+                <div>
+                  <label className="label">
+                    <span className="label-text">Price XPath</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="//*[@id='priceblock_ourprice']"
+                    className="input input-bordered w-full"
+                  />
+                </div>
+
+                {/* Price Regex */}
+                <div>
+                  <label className="label">
+                    <span className="label-text">Price Cleanup Regex</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="[\d.,]+"
+                    className="input input-bordered w-full"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Use regex to extract only the price (example:{" "}
+                    <code>[\d.,]+</code>).
+                  </p>
+                </div>
+              </div>
+
+              {/* Field Group: Title */}
+              <div className="grid gap-4">
+                <h3 className="font-semibold">Title Extraction</h3>
+
+                {/* Title XPath */}
+                <div>
+                  <label className="label">
+                    <span className="label-text">Title XPath</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="//h1[@id='productTitle']"
+                    className="input input-bordered w-full"
+                  />
+                </div>
+
+                {/* Title Regex */}
+                <div>
+                  <label className="label">
+                    <span className="label-text">Title Cleanup Regex</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder=".*"
+                    className="input input-bordered w-full"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Use regex to refine the title (leave <code>.*</code> for raw
+                    text).
+                  </p>
+                </div>
+              </div>
+
+              {/* Field Group: Image */}
+              <div className="grid gap-4">
+                <h3 className="font-semibold">Image Extraction</h3>
+
+                {/* Image XPath */}
+                <div>
+                  <label className="label">
+                    <span className="label-text">Image XPath</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="//img[@id='main-image']/@src"
+                    className="input input-bordered w-full"
+                  />
+                </div>
+
+                {/* Image Regex */}
+                <div>
+                  <label className="label">
+                    <span className="label-text">Image Cleanup Regex</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="https?://.*"
+                    className="input input-bordered w-full"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Use regex to validate/clean the image URL (example:{" "}
+                    <code>https?://.*</code>).
+                  </p>
+                </div>
               </div>
 
               {/* Library Type */}
@@ -45,22 +132,6 @@ const Page = () => {
                   <option value="scrapy">Scrapy</option>
                   <option value="playwright">Playwright</option>
                 </select>
-              </div>
-
-              {/* Cleaning Regex */}
-              <div>
-                <label className="label">
-                  <span className="label-text">Cleaning Regex</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="[\d.,]+"
-                  className="input input-bordered w-full"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Use regex to extract only the price value (example:{" "}
-                  <code>[\d.,]+</code>).
-                </p>
               </div>
 
               {/* Submit */}
