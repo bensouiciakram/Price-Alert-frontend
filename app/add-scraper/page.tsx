@@ -4,16 +4,17 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAddScraper } from "../../lib";
 
 const scraperSchema = z.object({
-  url: z.string().url("Enter a valid URL"),
+  website: z.string().url("Enter a valid URL"),
   priceXPath: z.string().min(1, "Price XPath is required"),
   priceRegex: z.string().optional(),
   titleXPath: z.string().min(1, "Title XPath is required"),
   titleRegex: z.string().optional(),
   imageXPath: z.string().min(1, "Image XPath is required"),
   imageRegex: z.string().optional(),
-  lib: z.enum(["scrapy", "playwright"]),
+  lib: z.enum(["scrapy", "playwright", "requests"]),
 });
 
 type ScraperFormValues = z.infer<typeof scraperSchema>;
@@ -22,12 +23,12 @@ const Page = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
   } = useForm<ScraperFormValues>({
     resolver: zodResolver(scraperSchema),
     defaultValues: {
-      url: "",
+      website: "",
       priceXPath: "",
       priceRegex: "",
       titleXPath: "",
@@ -38,18 +39,49 @@ const Page = () => {
     },
   });
 
+  // Use the React Query hook
+  const addScraper = useAddScraper();
+
   const onSubmit = async (values: ScraperFormValues) => {
-    console.log("save scraper", values);
-    reset({
-      url: "",
-      priceXPath: "",
-      priceRegex: "",
-      titleXPath: "",
-      titleRegex: "",
-      imageXPath: "",
-      imageRegex: "",
-      lib: "scrapy",
-    });
+    try {
+      // Transform form data to match API expectations
+      const scraperData = {
+        url: values.website,
+        scraping_method: values.lib,
+        price_selector: values.priceXPath,
+        image_selector: values.imageXPath,
+        title_selector: values.titleXPath,
+        price_cleanup: values.priceRegex || "",
+        title_cleanup: values.titleRegex || "",
+        image_cleanup: values.imageRegex || "",
+      };
+
+      // Call the mutation
+      const result = await addScraper.mutateAsync(scraperData);
+      
+      // Show success message
+      console.log("Scraper added successfully:", result.message);
+      
+      // Reset form on success
+      reset({
+        website: "",
+        priceXPath: "",
+        priceRegex: "",
+        titleXPath: "",
+        titleRegex: "",
+        imageXPath: "",
+        imageRegex: "",
+        lib: "scrapy",
+      });
+      
+      // You could also show a toast notification here
+      alert("Scraper added successfully!");
+      
+    } catch (error) {
+      console.error("Failed to add scraper:", error);
+      // Handle error - you could show a toast notification here
+      alert("Failed to add scraper. Please try again.");
+    }
   };
   return (
     <div className="bg-base-200 text-base-content min-h-screen">
@@ -62,20 +94,20 @@ const Page = () => {
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body">
             <form className="form-control gap-6" onSubmit={handleSubmit(onSubmit)} noValidate>
-              {/* Product URL */}
+              {/* Website */}
               <div>
                 <label className="label">
-                  <span className="label-text">Product URL</span>
+                  <span className="label-text">Website</span>
                 </label>
                 <input
                   type="url"
-                  placeholder="https://example.com/product/123"
-                  className={`input input-bordered w-full ${errors.url ? "input-error" : ""}`}
-                  aria-invalid={!!errors.url}
-                  {...register("url")}
+                  placeholder="https://example.com"
+                  className={`input input-bordered w-full ${errors.website ? "input-error" : ""}`}
+                  aria-invalid={!!errors.website}
+                  {...register("website")}
                 />
-                {errors.url && (
-                  <span className="text-error text-xs mt-1">{errors.url.message}</span>
+                {errors.website && (
+                  <span className="text-error text-xs mt-1">{errors.website.message}</span>
                 )}
               </div>
 
@@ -208,6 +240,7 @@ const Page = () => {
                 >
                   <option value="scrapy">Scrapy</option>
                   <option value="playwright">Playwright</option>
+                  <option value="requests">Requests</option>
                 </select>
                 {errors.lib && (
                   <span className="text-error text-xs mt-1">{errors.lib.message}</span>
@@ -219,9 +252,9 @@ const Page = () => {
                 <button
                   type="submit"
                   className="btn btn-primary w-full sm:w-auto"
-                  disabled={isSubmitting}
+                  disabled={addScraper.isPending}
                 >
-                  {isSubmitting ? "Saving..." : "Save Scraper"}
+                  {addScraper.isPending ? "Saving..." : "Save Scraper"}
                 </button>
               </div>
             </form>
