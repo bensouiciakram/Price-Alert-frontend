@@ -1,9 +1,9 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { priceHistoryService, PriceHistory } from '../http';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { priceHistoryService, PriceHistory } from "../http";
 
 // Query Keys
 export const priceHistoryQueryKeys = {
-  all: ['priceHistory'] as const,
+  all: ["priceHistory"] as const,
 };
 
 // Price History Hooks
@@ -16,7 +16,7 @@ export const usePriceHistory = () => {
 
 export const useCreatePriceHistory = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: priceHistoryService.create,
     onSuccess: () => {
