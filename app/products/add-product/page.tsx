@@ -15,7 +15,8 @@ const addProductSchema = z.object({
     .refine((v) => !Number.isNaN(Number(v)) && Number(v) > 0, {
       message: "Enter a valid positive number",
     }),
-  freq: z.enum(["3600", "14400", "86400"]),
+  // allow 1 minute scraping option
+  freq: z.enum(["60", "3600", "14400", "86400"]),
   name: z.string().optional(),
   channel: z
     .enum(["telegram", "gmail"])
@@ -56,10 +57,10 @@ const Page = () => {
 
       // Call the mutation
       const result = await addProduct.mutateAsync(productData);
-      
+
       // Show success message
       console.log("Product added successfully:", result.message);
-      
+
       // Reset form on success
       reset({
         url: "",
@@ -68,10 +69,11 @@ const Page = () => {
         name: "",
         channel: "telegram",
       });
-      
+
       // Show success notification
-      alert("Product added successfully! We'll start monitoring it for price changes.");
-      
+      alert(
+        "Product added successfully! We'll start monitoring it for price changes."
+      );
     } catch (error) {
       console.error("Failed to add product:", error);
       // Handle error - you could show a toast notification here
@@ -94,20 +96,46 @@ const Page = () => {
             {/* Success Message */}
             {addProduct.isSuccess && (
               <div className="alert alert-success">
-                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="stroke-current shrink-0 h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
                 </svg>
-                <span>Product added successfully! We'll start monitoring it for price changes.</span>
+                <span>
+                  Product added successfully! We'll start monitoring it for
+                  price changes.
+                </span>
               </div>
             )}
 
             {/* Error Message */}
             {addProduct.isError && (
               <div className="alert alert-error">
-                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="stroke-current shrink-0 h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
                 </svg>
-                <span>{addProduct.error?.message || "Failed to add product. Please try again."}</span>
+                <span>
+                  {addProduct.error?.message ||
+                    "Failed to add product. Please try again."}
+                </span>
               </div>
             )}
 
@@ -171,6 +199,7 @@ const Page = () => {
                     aria-invalid={!!errors.freq}
                     {...register("freq")}
                   >
+                    <option value="60">Every 1 minute</option>
                     <option value="3600">Every hour</option>
                     <option value="14400">Every 4 hours</option>
                     <option value="86400">Daily</option>
