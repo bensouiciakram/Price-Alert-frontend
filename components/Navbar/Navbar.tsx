@@ -17,9 +17,6 @@ const Navbar = () => {
           </summary>
           <ul className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
             <li>
-              <Link href="/dashboard">Dashboard</Link>
-            </li>
-            <li>
               <Link href="/products/alerts">Alerts</Link>
             </li>
             <li>
@@ -34,9 +31,6 @@ const Navbar = () => {
           </ul>
         </details>
         <ul className="menu menu-horizontal px-1 max-md:hidden">
-          <li>
-            <Link href="/dashboard">Dashboard</Link>
-          </li>
           <li>
             <Link href="/products/alerts">Alerts</Link>
           </li>

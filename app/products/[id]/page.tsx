@@ -202,8 +202,8 @@ const Page = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-2 mt-4">
-                  <a href="/dashboard" className="btn btn-outline btn-sm">
-                    Back to Dashboard
+                  <a href="/products" className="btn btn-outline btn-sm">
+                    Back to Products
                   </a>
                 </div>
               </div>

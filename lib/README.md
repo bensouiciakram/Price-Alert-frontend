@@ -192,7 +192,7 @@ function AddScraperForm() {
   const handleSubmit = async (formData: AddScraperRequest) => {
     try {
       const result = await addScraper.mutateAsync(formData);
-      console.log('Scraper added:', result.message);
+      ('Scraper added:', result.message);
     } catch (error) {
       console.error('Failed to add scraper:', error);
     }
