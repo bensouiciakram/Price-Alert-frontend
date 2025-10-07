@@ -1,11 +1,11 @@
 import React from "react";
 import Card from "../Card/Card";
 
-const DashboardPreview = () => {
+const ProductsPreview = () => {
   return (
     <div id="dashboard-preview" className="px-4 sm:px-8 lg:px-16 py-12">
       <h1 className="text-center text-2xl sm:text-3xl font-bold mb-8">
-        Preview Your Dashboard
+        Preview Your Products
       </h1>
       <p className="text-center text-sm text-gray-500 max-w-xl mx-auto mb-10">
         See how products you’re monitoring appear in your dashboard. Get updates
@@ -21,4 +21,4 @@ const DashboardPreview = () => {
   );
 };
 
-export default DashboardPreview;
+export default ProductsPreview;
