@@ -2,10 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import PriceHistoryChart from "@/components/ProductChart/ProductChart";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useProduct } from "@/lib/hooks/useProducts";
 import { useAlertById, useUpdateAlert } from "@/lib/hooks/useAlerts";
 import { usePriceHistory } from "@/lib/hooks/usePriceHistory";
+import LastPricesRecords from "@/components/LastPricesRecords/LastPricesRecords";
 
 const Page = () => {
   const params = useParams();
@@ -13,8 +15,8 @@ const Page = () => {
 
   // Product
   const { data: product, isLoading: productLoading } = useProduct(productId);
-  console.log("product", product);
   const productAny = product as any;
+  console.log('product : ',productAny);
   const firstAlertId: number | undefined =
     Array.isArray(productAny?.alerts) && productAny.alerts.length
       ? productAny.alerts[0]
@@ -110,16 +112,16 @@ const Page = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column: Product Info */}
           <div className="card bg-base-100 shadow-xl">
-            <figure>
-              <img
-                src={
-                  productAny?.meta?.image ||
-                  "https://via.placeholder.com/400x250"
-                }
-                alt={productAny?.meta?.title || "product"}
-                className="object-cover"
-              />
-            </figure>
+          <div className="relative w-full aspect-[16/10] sm:aspect-[4/3] rounded-t-xl overflow-hidden">
+            <Image
+              src={productAny?.meta?.image || "https://via.placeholder.com/400x250"}
+              alt={productAny?.meta?.title || "product"}
+              fill
+              className="object-cover"
+              sizes="(max-width: 640px) 100vw, 400px"
+              priority
+            />
+          </div>
             <div className="card-body">
               <h2 className="card-title">
                 {productAny?.meta?.title || "Product"}
@@ -200,7 +202,6 @@ const Page = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-2 mt-4">
-                  <button className="btn btn-error">Delete Monitor</button>
                   <a href="/dashboard" className="btn btn-outline btn-sm">
                     Back to Dashboard
                   </a>
@@ -214,7 +215,7 @@ const Page = () => {
             {/* Price History */}
             <div className="card bg-base-100 shadow-xl">
               <div className="card-body">
-                <PriceHistoryChart />
+                <PriceHistoryChart data={sortedHistory} />
                 <p className="text-xs text-gray-400 mt-3">
                   (Integrate chart library like Recharts / Chart.js when
                   converting to React)
@@ -223,39 +224,7 @@ const Page = () => {
             </div>
 
             {/* Recent Records */}
-            <div className="card bg-base-100 shadow-xl">
-              <div className="card-body">
-                <h3 className="card-title text-lg">Recent Price Records</h3>
-                <div className="overflow-x-auto">
-                  <table className="table table-zebra w-full text-sm">
-                    <thead>
-                      <tr>
-                        <th>Date</th>
-                        <th>Price</th>
-                        <th>Change</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>2025-09-30 14:25</td>
-                        <td>$499.00</td>
-                        <td className="text-success">—</td>
-                      </tr>
-                      <tr>
-                        <td>2025-09-29 09:10</td>
-                        <td>$519.00</td>
-                        <td className="text-error">- $20</td>
-                      </tr>
-                      <tr>
-                        <td>2025-09-28 08:12</td>
-                        <td>$529.00</td>
-                        <td className="text-error">- $10</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+            <LastPricesRecords data={sortedHistory?.slice(0,3)}/>
           </div>
         </div>
       </main>

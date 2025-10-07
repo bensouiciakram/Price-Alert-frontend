@@ -7,6 +7,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { PriceHistory } from '@/lib';
 
 const data = [
   { date: "Sep 25", price: 510 },
@@ -16,7 +17,11 @@ const data = [
   { date: "Sep 29", price: 470 },
 ];
 
-export default function PriceHistoryChart() {
+interface Props {
+  data:PriceHistory[]|undefined;
+}
+
+export default function PriceHistoryChart({data}:Props) {
   return (
     <div className="bg-white shadow-md rounded-xl p-6">
       <h2 className="text-lg font-semibold text-gray-800 mb-4">
@@ -25,7 +30,7 @@ export default function PriceHistoryChart() {
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
-            <XAxis dataKey="date" />
+            <XAxis dataKey="checked_at" />
             <YAxis />
             <Tooltip />
             <Line
