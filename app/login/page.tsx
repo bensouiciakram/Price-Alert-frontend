@@ -5,16 +5,21 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useLogin } from "@/lib/hooks/useAuth";
+import { useRouter } from "next/navigation";
 
 // 🧩 Validation Schema
 const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  username: z.string().min(1, "Username is required"),
   password: z.string().min(1, "Password is required"),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 const Page = () => {
+  const router = useRouter();
+  const loginMutation = useLogin();
+
   const {
     register,
     handleSubmit,
@@ -26,20 +31,12 @@ const Page = () => {
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
-      console.log("Login Data:", data);
-      // 🔹 Example API call:
-      // const res = await fetch("/api/login/", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(data),
-      // });
-      // if (!res.ok) throw new Error("Login failed");
-
+      await loginMutation.mutateAsync(data);
       reset();
       alert("Login successful!");
+      router.push("/");
     } catch (error) {
-      console.error(error);
-      alert("Invalid email or password!");
+      alert("Invalid username or password!");
     }
   };
 
@@ -62,22 +59,22 @@ const Page = () => {
               className="form-control gap-4"
               noValidate
             >
-              {/* Email */}
+              {/* Username */}
               <div>
                 <label className="label">
-                  <span className="label-text">Email</span>
+                  <span className="label-text">Username</span>
                 </label>
                 <input
-                  type="email"
+                  type="text"
                   className={`input input-bordered w-full ${
-                    errors.email ? "input-error" : ""
+                    errors.username ? "input-error" : ""
                   }`}
-                  placeholder="you@example.com"
-                  {...register("email")}
+                  placeholder="e.g. john_doe"
+                  {...register("username")}
                 />
-                {errors.email && (
+                {errors.username && (
                   <p className="text-error text-sm mt-1">
-                    {errors.email.message}
+                    {errors.username.message}
                   </p>
                 )}
               </div>
@@ -105,14 +102,15 @@ const Page = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || loginMutation.isPending}
                 className="btn btn-primary w-full mt-2"
               >
-                {isSubmitting ? "Logging in..." : "Log In"}
+                {isSubmitting || loginMutation.isPending
+                  ? "Logging in..."
+                  : "Log In"}
               </button>
             </form>
 
-            {/* Divider + Telegram Section */}
             <div className="divider">Optional</div>
 
             <div className="text-center">
@@ -135,7 +133,6 @@ const Page = () => {
               </p>
             </div>
 
-            {/* Signup Link */}
             <p className="text-center text-sm mt-4">
               Don’t have an account?{" "}
               <Link href="/register" className="link link-hover text-primary">

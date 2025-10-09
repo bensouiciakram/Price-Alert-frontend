@@ -4,6 +4,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRegister } from "@/lib/hooks/useAuth"; // ✅ your custom hook
+import { useRouter } from "next/navigation";
 
 // 🧩 Validation Schema
 const signupSchema = z
@@ -21,6 +23,9 @@ const signupSchema = z
 type SignupFormValues = z.infer<typeof signupSchema>;
 
 const Page = () => {
+  const router = useRouter();
+  const { mutate: registerUser, isPending, isError, error } = useRegister();
+
   const {
     register,
     handleSubmit,
@@ -31,16 +36,23 @@ const Page = () => {
   });
 
   const onSubmit = async (data: SignupFormValues) => {
-    try {
-      console.log("Signup Data:", data);
-      // 🔹 Make your backend API call here
-      // await fetch("/api/signup/", { method: "POST", body: JSON.stringify(data) });
-      reset();
-      alert("Signup successful!");
-    } catch (error) {
-      console.error(error);
-      alert("Something went wrong!");
-    }
+    registerUser(
+      {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        re_password: data.confirmPassword,
+      },
+      {
+        onSuccess: () => {
+          reset();
+          router.push("/register/verify");
+        },
+        onError: () => {
+          alert("Something went wrong during registration.");
+        },
+      }
+    );
   };
 
   return (
@@ -144,11 +156,19 @@ const Page = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || isPending}
                 className="btn btn-primary w-full mt-2"
               >
-                {isSubmitting ? "Signing Up..." : "Sign Up"}
+                {isSubmitting || isPending ? "Signing Up..." : "Sign Up"}
               </button>
+
+              {isError && (
+                <p className="text-error text-center text-sm mt-2">
+                  {error instanceof Error
+                    ? error.message
+                    : "Registration failed."}
+                </p>
+              )}
             </form>
 
             <div className="divider">Optional</div>

@@ -128,3 +128,20 @@ export interface XpathFormData {
   title_cleanup: string;
   image_cleanup: string;
 }
+
+export interface RegisterRequest {
+  username: string;
+  email: string;
+  password: string;
+  re_password: string;
+}
+
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface TokenResponse {
+  access: string;
+  refresh: string;
+}

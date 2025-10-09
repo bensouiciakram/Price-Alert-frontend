@@ -16,7 +16,7 @@ const addProductSchema = z.object({
       message: "Enter a valid positive number",
     }),
   // allow 1 minute scraping option
-  freq: z.enum(["60", "3600", "14400", "86400"]),
+  freq: z.enum(["10", "3600", "14400", "86400"]),
   name: z.string().optional(),
   channel: z
     .enum(["telegram", "gmail"])
@@ -199,7 +199,7 @@ const Page = () => {
                     aria-invalid={!!errors.freq}
                     {...register("freq")}
                   >
-                    <option value="60">Every 1 minute</option>
+                    <option value="10">Every 1 minute</option>
                     <option value="3600">Every hour</option>
                     <option value="14400">Every 4 hours</option>
                     <option value="86400">Daily</option>
