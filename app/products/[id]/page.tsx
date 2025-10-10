@@ -16,7 +16,7 @@ const Page = () => {
   // Product
   const { data: product, isLoading: productLoading } = useProduct(productId);
   const productAny = product as any;
-  console.log('product : ',productAny);
+  console.log("product : ", productAny);
   const firstAlertId: number | undefined =
     Array.isArray(productAny?.alerts) && productAny.alerts.length
       ? productAny.alerts[0]
@@ -30,7 +30,8 @@ const Page = () => {
     (ph) => ph.product.id === productId
   );
   const sortedHistory = productPriceHistory?.sort(
-    (a, b) => new Date(b.checked_at).getTime() - new Date(a.checked_at).getTime()
+    (a, b) =>
+      new Date(b.checked_at).getTime() - new Date(a.checked_at).getTime()
   );
   const currentPrice = sortedHistory?.[0]?.price;
 
@@ -112,16 +113,19 @@ const Page = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column: Product Info */}
           <div className="card bg-base-100 shadow-xl">
-          <div className="relative w-full aspect-[16/10] sm:aspect-[4/3] rounded-t-xl overflow-hidden">
-            <Image
-              src={productAny?.meta?.image || "https://via.placeholder.com/400x250"}
-              alt={productAny?.meta?.title || "product"}
-              fill
-              className="object-cover"
-              sizes="(max-width: 640px) 100vw, 400px"
-              priority
-            />
-          </div>
+            <div className="relative w-full aspect-[16/10] sm:aspect-[4/3] rounded-t-xl overflow-hidden bg-base-200 flex items-center justify-center">
+              <Image
+                src={
+                  productAny?.meta?.image ||
+                  "https://via.placeholder.com/400x250"
+                }
+                alt={productAny?.meta?.title || "product"}
+                fill
+                className="object-contain p-2"
+                sizes="(max-width: 640px) 100vw, 400px"
+                priority
+              />
+            </div>
             <div className="card-body">
               <h2 className="card-title">
                 {productAny?.meta?.title || "Product"}
@@ -224,7 +228,7 @@ const Page = () => {
             </div>
 
             {/* Recent Records */}
-            <LastPricesRecords data={sortedHistory?.slice(0,3)}/>
+            <LastPricesRecords data={sortedHistory?.slice(0, 3)} />
           </div>
         </div>
       </main>
