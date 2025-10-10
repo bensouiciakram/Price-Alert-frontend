@@ -74,3 +74,20 @@ export const useLogout = () => {
     },
   });
 };
+
+export const isLoggedIn = (): boolean => {
+  if (typeof window === "undefined") return false; // avoid SSR issues
+  const token = localStorage.getItem("authToken");
+  return !!token;
+};
+
+export const useAuthStatus = () => {
+  return useQuery({
+    queryKey: authQueryKeys.current,
+    queryFn: async () => {
+      const token = localStorage.getItem("authToken");
+      return { isAuthenticated: !!token };
+    },
+    staleTime: Infinity,
+  });
+};
