@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { priceHistoryService, PriceHistory } from "../http";
+import { priceHistoryService, PriceHistory, LastPrice } from "../http";
 
 // Query Keys
 export const priceHistoryQueryKeys = {
@@ -22,5 +22,13 @@ export const useCreatePriceHistory = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: priceHistoryQueryKeys.all });
     },
+  });
+};
+
+export const useLastPrice = (productId: number) => {
+  return useQuery({
+    queryKey: ["lastPrice", productId],
+    queryFn: () => priceHistoryService.getLastPrice({ product_id: productId }),
+    enabled: productId !== undefined,
   });
 };

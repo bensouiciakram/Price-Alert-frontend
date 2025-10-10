@@ -26,6 +26,12 @@ export interface PriceHistory {
   product: Product;
 }
 
+export interface LastPrice {
+  product_id: number;
+  last_price: number;
+  checked_at: string;
+}
+
 export interface Xpath {
   id?: number;
   website: number;
@@ -85,6 +91,10 @@ export interface ApiResponse<T> {
 }
 
 // Additional utility types
+export interface LastPriceRequest {
+  product_id: number;
+}
+
 export interface PaginatedResponse<T> {
   count: number;
   next: string | null;
