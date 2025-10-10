@@ -42,9 +42,6 @@ const Navbar = () => {
             <li>
               <Link href="/products">Products</Link>
             </li>
-            <li>
-              <Link href="/settings">Settings</Link>
-            </li>
             {loggedIn ? (
               <li>
                 <button
@@ -69,9 +66,6 @@ const Navbar = () => {
           </li>
           <li>
             <Link href="/products">Products</Link>
-          </li>
-          <li>
-            <Link href="/settings">Settings</Link>
           </li>
           {loggedIn ? (
             <li>
