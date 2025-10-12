@@ -22,7 +22,10 @@ const Card = ({ product_id, meta, website }: Props) => {
       <div className="card-body">
         <h3 className="card-title text-lg">{meta?.title || "Untitled"}</h3>
         <p className="text-sm text-gray-500">{website?.url || "Unknown"}</p>
-        <p className="text-2xl font-bold text-success mt-2">${price}</p>
+        <p className="text-2xl font-bold text-success mt-2">
+          {website.currency.currency_symbol}
+          {price}
+        </p>
         <p className="text-xs sm:text-sm text-gray-400">
           Last updated: {checked_at}
         </p>

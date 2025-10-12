@@ -9,6 +9,7 @@ export interface Website {
   id?: number;
   url: string;
   scraping_method?: string;
+  currency: Currency;
 }
 
 export interface ProductMetaData {

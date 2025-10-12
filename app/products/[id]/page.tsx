@@ -16,7 +16,7 @@ const Page = () => {
   // Product
   const { data: product, isLoading: productLoading } = useProduct(productId);
   const productAny = product as any;
-  console.log("product : ", productAny);
+  const currencySymbol = productAny?.website.currency.currency_symbol;
   const firstAlertId: number | undefined =
     Array.isArray(productAny?.alerts) && productAny.alerts.length
       ? productAny.alerts[0]
@@ -44,17 +44,6 @@ const Page = () => {
   useEffect(() => {
     if (alert?.threshold != null) setInputValue(String(alert.threshold));
   }, [alert]);
-
-  // format currency helper
-  const formatCurrency = (value?: string | number) => {
-    if (value == null || value === "") return "—";
-    const num = Number(value);
-    if (Number.isNaN(num)) return value as any;
-    return new Intl.NumberFormat(undefined, {
-      style: "currency",
-      currency: "USD",
-    }).format(num);
-  };
 
   const startEdit = () => {
     setErrorMessage(null);
@@ -138,7 +127,7 @@ const Page = () => {
                 <div>
                   <p className="text-sm text-gray-500">Current Price</p>
                   <p className="text-3xl font-bold text-success">
-                    {formatCurrency(currentPrice ?? 499)}
+                    {currencySymbol} {currentPrice}
                   </p>
                 </div>
 
@@ -147,7 +136,7 @@ const Page = () => {
                   {!isEditing ? (
                     <>
                       <p className="text-lg font-semibold">
-                        {formatCurrency(alert?.threshold)}
+                        {currencySymbol} {alert?.threshold}
                       </p>
                       <button
                         className="btn btn-sm btn-outline mt-2"

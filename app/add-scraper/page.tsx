@@ -7,7 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useAddScraper } from "@/lib";
 import { useCurrencies } from "@/lib/hooks";
 
-// ✅ Updated schema to include currency
 const scraperSchema = z.object({
   website: z.string().url("Enter a valid URL"),
   priceXPath: z.string().min(1, "Price XPath is required"),
@@ -17,7 +16,7 @@ const scraperSchema = z.object({
   imageXPath: z.string().min(1, "Image XPath is required"),
   imageRegex: z.string().optional(),
   lib: z.enum(["scrapy", "playwright", "requests"]),
-  currency: z.string().min(1, "Currency is required"),
+  currency: z.string().min(1, "Currency is required"), // still string, converted later
 });
 
 type ScraperFormValues = z.infer<typeof scraperSchema>;
@@ -57,7 +56,7 @@ const Page = () => {
         price_cleanup: values.priceRegex || "",
         title_cleanup: values.titleRegex || "",
         image_cleanup: values.imageRegex || "",
-        currency: values.currency,
+        currency: Number(values.currency),
       };
 
       const result = await addScraper.mutateAsync(scraperData);
@@ -211,7 +210,7 @@ const Page = () => {
                 </div>
               </div>
 
-              {/* ✅ Currency Selector (moved before library) */}
+              {/* ✅ Currency Selector (before library) */}
               <div>
                 <label className="label">
                   <span className="label-text">Currency</span>
@@ -229,7 +228,7 @@ const Page = () => {
                       : "Select a currency"}
                   </option>
                   {currencies?.map((c) => (
-                    <option key={c.id} value={c.currency_name}>
+                    <option key={c.id} value={c.id}>
                       {c.currency_name} ({c.currency_symbol})
                     </option>
                   ))}
