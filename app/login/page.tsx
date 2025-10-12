@@ -35,7 +35,7 @@ const Page = () => {
       reset();
       alert("Login successful!");
       router.push("/");
-    } catch (error) {
+    } catch {
       alert("Invalid username or password!");
     }
   };

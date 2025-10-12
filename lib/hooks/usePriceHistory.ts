@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { priceHistoryService, PriceHistory, LastPrice } from "../http";
+import { priceHistoryService } from "../http";
 
 // Query Keys
 export const priceHistoryQueryKeys = {

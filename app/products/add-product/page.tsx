@@ -89,7 +89,7 @@ const Page = () => {
           <div className="card-body">
             <h2 className="card-title text-2xl">Add a Product to Monitor</h2>
             <p className="text-sm text-gray-500">
-              Paste a product URL and set a target price. We'll check it
+              Paste a product URL and set a target price. We&apos;ll check it
               periodically and alert you when it drops below your threshold.
             </p>
 
@@ -110,7 +110,7 @@ const Page = () => {
                   />
                 </svg>
                 <span>
-                  Product added successfully! We'll start monitoring it for
+                  Product added successfully! We&apos;ll start monitoring it for
                   price changes.
                 </span>
               </div>

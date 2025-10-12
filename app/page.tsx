@@ -1,5 +1,3 @@
-import Image from "next/image";
-import Navbar from "@/components/Navbar/Navbar";
 import CallToAction from "@/components/CallToAction/CallToAction";
 import ProductsPreview from "@/components/ProductsPreview/ProductsPreview";
 import SignUp from "@/components/SignUp/SignUp";

@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { channelService, Channel } from "../http";
+import { channelService } from "../http";
 
 // Query Keys
 export const channelQueryKeys = {

@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { alertMetService, AlertMet } from "@/lib";
+import { alertMetService } from "@/lib";
 
 // 🔑 Query Keys
 export const alertMetQueryKeys = {

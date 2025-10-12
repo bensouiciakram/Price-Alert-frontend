@@ -3,7 +3,6 @@ import React from "react";
 import Link from "next/link";
 import { useProducts } from "@/lib/hooks/useProducts";
 import Card from "@/components/Card/Card";
-import { useLastPrice } from "@/lib/hooks/usePriceHistory";
 
 const Page = () => {
   const { data: products, isLoading: productsLoading } = useProducts();
@@ -28,7 +27,7 @@ const Page = () => {
             products?.map((product) => (
               <Card
                 key={product.id}
-                product_id={product.id!!}
+                product_id={product.id!}
                 meta={product.meta!}
                 website={product.website}
               />

@@ -57,7 +57,7 @@ export default function AlertsPage() {
       >
         {alertMets.map((alert) => {
           const website = websites?.find((w) => w.url === alert.website_url);
-          const currencySymbol = website?.currency_symbol || "";
+          const currencySymbol = website?.currency.currency_symbol || "";
 
           return (
             <div

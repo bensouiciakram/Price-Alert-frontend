@@ -6,7 +6,6 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  Brush,
 } from "recharts";
 import { PriceHistory } from "@/lib";
 

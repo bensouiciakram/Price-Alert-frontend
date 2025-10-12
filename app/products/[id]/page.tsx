@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import PriceHistoryChart from "@/components/ProductChart/ProductChart";
+import { AxiosError } from "axios";
 import Image from "next/image";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useProduct } from "@/lib/hooks/useProducts";
 import { useAlertById, useUpdateAlert } from "@/lib/hooks/useAlerts";
 import { usePriceHistory } from "@/lib/hooks/usePriceHistory";
+import PriceHistoryChart from "@/components/ProductChart/ProductChart";
 import LastPricesRecords from "@/components/LastPricesRecords/LastPricesRecords";
 
 const Page = () => {
@@ -15,11 +17,10 @@ const Page = () => {
 
   // Product
   const { data: product, isLoading: productLoading } = useProduct(productId);
-  const productAny = product as any;
-  const currencySymbol = productAny?.website.currency.currency_symbol;
+  const currencySymbol = product?.website.currency.currency_symbol;
   const firstAlertId: number | undefined =
-    Array.isArray(productAny?.alerts) && productAny.alerts.length
-      ? productAny.alerts[0]
+    Array.isArray(product?.alerts) && product.alerts.length
+      ? product.alerts[0]
       : undefined;
   const { data: alert, isLoading: alertLoading } = useAlertById(firstAlertId);
   const updateAlert = useUpdateAlert();
@@ -86,7 +87,7 @@ const Page = () => {
           // keep message short-lived
           setTimeout(() => setSuccessMessage(null), 4000);
         },
-        onError: (err: any) => {
+        onError: (err: Error) => {
           setErrorMessage(
             err?.message || "Failed to update threshold. Try again."
           );
@@ -105,10 +106,9 @@ const Page = () => {
             <div className="relative w-full aspect-[16/10] sm:aspect-[4/3] rounded-t-xl overflow-hidden bg-base-200 flex items-center justify-center">
               <Image
                 src={
-                  productAny?.meta?.image ||
-                  "https://via.placeholder.com/400x250"
+                  product?.meta?.image || "https://via.placeholder.com/400x250"
                 }
-                alt={productAny?.meta?.title || "product"}
+                alt={product?.meta?.title || "product"}
                 fill
                 className="object-contain p-2"
                 sizes="(max-width: 640px) 100vw, 400px"
@@ -117,10 +117,10 @@ const Page = () => {
             </div>
             <div className="card-body">
               <h2 className="card-title">
-                {productAny?.meta?.title || "Product"}
+                {product?.meta?.title || "Product"}
               </h2>
               <p className="text-sm text-gray-500">
-                Store: {productAny?.website?.url || "Unknown"}
+                Store: {product?.website?.url || "Unknown"}
               </p>
 
               <div className="space-y-4">
@@ -195,9 +195,9 @@ const Page = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-2 mt-4">
-                  <a href="/products" className="btn btn-outline btn-sm">
+                  <Link href="/products" className="btn btn-outline btn-sm">
                     Back to Products
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

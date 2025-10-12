@@ -20,6 +20,7 @@ export interface ProductMetaData {
 
 export interface Product {
   id?: number;
+  alerts: number[];
   url: string;
   created_at?: string;
   website: Website;
