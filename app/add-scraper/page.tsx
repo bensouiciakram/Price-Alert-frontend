@@ -4,8 +4,10 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAddScraper } from "../../lib";
+import { useAddScraper } from "@/lib";
+import { useCurrencies } from "@/lib/hooks";
 
+// ✅ Updated schema to include currency
 const scraperSchema = z.object({
   website: z.string().url("Enter a valid URL"),
   priceXPath: z.string().min(1, "Price XPath is required"),
@@ -15,6 +17,7 @@ const scraperSchema = z.object({
   imageXPath: z.string().min(1, "Image XPath is required"),
   imageRegex: z.string().optional(),
   lib: z.enum(["scrapy", "playwright", "requests"]),
+  currency: z.string().min(1, "Currency is required"),
 });
 
 type ScraperFormValues = z.infer<typeof scraperSchema>;
@@ -36,15 +39,15 @@ const Page = () => {
       imageXPath: "",
       imageRegex: "",
       lib: "scrapy",
+      currency: "",
     },
   });
 
-  // Use the React Query hook
   const addScraper = useAddScraper();
+  const { data: currencies, isLoading: currenciesLoading } = useCurrencies();
 
   const onSubmit = async (values: ScraperFormValues) => {
     try {
-      // Transform form data to match API expectations
       const scraperData = {
         url: values.website,
         scraping_method: values.lib,
@@ -54,38 +57,22 @@ const Page = () => {
         price_cleanup: values.priceRegex || "",
         title_cleanup: values.titleRegex || "",
         image_cleanup: values.imageRegex || "",
+        currency: values.currency,
       };
 
-      // Call the mutation
       const result = await addScraper.mutateAsync(scraperData);
-      
-      // Show success message
+
       console.log("Scraper added successfully:", result.message);
-      
-      // Reset form on success
-      reset({
-        website: "",
-        priceXPath: "",
-        priceRegex: "",
-        titleXPath: "",
-        titleRegex: "",
-        imageXPath: "",
-        imageRegex: "",
-        lib: "scrapy",
-      });
-      
-      // You could also show a toast notification here
+      reset();
       alert("Scraper added successfully!");
-      
     } catch (error) {
       console.error("Failed to add scraper:", error);
-      // Handle error - you could show a toast notification here
       alert("Failed to add scraper. Please try again.");
     }
   };
+
   return (
     <div className="bg-base-200 text-base-content min-h-screen">
-      {/* Form Section */}
       <section className="max-w-3xl mx-auto py-8 sm:py-12 px-4 sm:px-6">
         <h2 className="text-xl sm:text-2xl font-bold mb-6 text-center">
           Create New Scraper
@@ -93,7 +80,11 @@ const Page = () => {
 
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body">
-            <form className="form-control gap-6" onSubmit={handleSubmit(onSubmit)} noValidate>
+            <form
+              className="form-control gap-6"
+              onSubmit={handleSubmit(onSubmit)}
+              noValidate
+            >
               {/* Website */}
               <div>
                 <label className="label">
@@ -102,20 +93,21 @@ const Page = () => {
                 <input
                   type="url"
                   placeholder="https://example.com"
-                  className={`input input-bordered w-full ${errors.website ? "input-error" : ""}`}
-                  aria-invalid={!!errors.website}
+                  className={`input input-bordered w-full ${
+                    errors.website ? "input-error" : ""
+                  }`}
                   {...register("website")}
                 />
                 {errors.website && (
-                  <span className="text-error text-xs mt-1">{errors.website.message}</span>
+                  <span className="text-error text-xs mt-1">
+                    {errors.website.message}
+                  </span>
                 )}
               </div>
 
-              {/* Field Group: Price */}
+              {/* Price */}
               <div className="grid gap-4">
                 <h3 className="font-semibold">Price Extraction</h3>
-
-                {/* Price XPath */}
                 <div>
                   <label className="label">
                     <span className="label-text">Price XPath</span>
@@ -123,16 +115,17 @@ const Page = () => {
                   <input
                     type="text"
                     placeholder="//*[@id='priceblock_ourprice']"
-                    className={`input input-bordered w-full ${errors.priceXPath ? "input-error" : ""}`}
-                    aria-invalid={!!errors.priceXPath}
+                    className={`input input-bordered w-full ${
+                      errors.priceXPath ? "input-error" : ""
+                    }`}
                     {...register("priceXPath")}
                   />
                   {errors.priceXPath && (
-                    <span className="text-error text-xs mt-1">{errors.priceXPath.message}</span>
+                    <span className="text-error text-xs mt-1">
+                      {errors.priceXPath.message}
+                    </span>
                   )}
                 </div>
-
-                {/* Price Regex */}
                 <div>
                   <label className="label">
                     <span className="label-text">Price Cleanup Regex</span>
@@ -144,17 +137,15 @@ const Page = () => {
                     {...register("priceRegex")}
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    Use regex to extract only the price (example: {" "}
+                    Use regex to extract only the price (example:{" "}
                     <code>[\d.,]+</code>).
                   </p>
                 </div>
               </div>
 
-              {/* Field Group: Title */}
+              {/* Title */}
               <div className="grid gap-4">
                 <h3 className="font-semibold">Title Extraction</h3>
-
-                {/* Title XPath */}
                 <div>
                   <label className="label">
                     <span className="label-text">Title XPath</span>
@@ -162,16 +153,17 @@ const Page = () => {
                   <input
                     type="text"
                     placeholder="//h1[@id='productTitle']"
-                    className={`input input-bordered w-full ${errors.titleXPath ? "input-error" : ""}`}
-                    aria-invalid={!!errors.titleXPath}
+                    className={`input input-bordered w-full ${
+                      errors.titleXPath ? "input-error" : ""
+                    }`}
                     {...register("titleXPath")}
                   />
                   {errors.titleXPath && (
-                    <span className="text-error text-xs mt-1">{errors.titleXPath.message}</span>
+                    <span className="text-error text-xs mt-1">
+                      {errors.titleXPath.message}
+                    </span>
                   )}
                 </div>
-
-                {/* Title Regex */}
                 <div>
                   <label className="label">
                     <span className="label-text">Title Cleanup Regex</span>
@@ -182,18 +174,12 @@ const Page = () => {
                     className="input input-bordered w-full"
                     {...register("titleRegex")}
                   />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Use regex to refine the title (leave <code>.*</code> for raw
-                    text).
-                  </p>
                 </div>
               </div>
 
-              {/* Field Group: Image */}
+              {/* Image */}
               <div className="grid gap-4">
                 <h3 className="font-semibold">Image Extraction</h3>
-
-                {/* Image XPath */}
                 <div>
                   <label className="label">
                     <span className="label-text">Image XPath</span>
@@ -201,16 +187,17 @@ const Page = () => {
                   <input
                     type="text"
                     placeholder="//img[@id='main-image']/@src"
-                    className={`input input-bordered w-full ${errors.imageXPath ? "input-error" : ""}`}
-                    aria-invalid={!!errors.imageXPath}
+                    className={`input input-bordered w-full ${
+                      errors.imageXPath ? "input-error" : ""
+                    }`}
                     {...register("imageXPath")}
                   />
                   {errors.imageXPath && (
-                    <span className="text-error text-xs mt-1">{errors.imageXPath.message}</span>
+                    <span className="text-error text-xs mt-1">
+                      {errors.imageXPath.message}
+                    </span>
                   )}
                 </div>
-
-                {/* Image Regex */}
                 <div>
                   <label className="label">
                     <span className="label-text">Image Cleanup Regex</span>
@@ -221,21 +208,48 @@ const Page = () => {
                     className="input input-bordered w-full"
                     {...register("imageRegex")}
                   />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Use regex to validate/clean the image URL (example: {" "}
-                    <code>https?://.*</code>).
-                  </p>
                 </div>
               </div>
 
-              {/* Library Type */}
+              {/* ✅ Currency Selector (moved before library) */}
+              <div>
+                <label className="label">
+                  <span className="label-text">Currency</span>
+                </label>
+                <select
+                  className={`select select-bordered w-full ${
+                    errors.currency ? "select-error" : ""
+                  }`}
+                  {...register("currency")}
+                  disabled={currenciesLoading}
+                >
+                  <option value="">
+                    {currenciesLoading
+                      ? "Loading currencies..."
+                      : "Select a currency"}
+                  </option>
+                  {currencies?.map((c) => (
+                    <option key={c.id} value={c.currency_name}>
+                      {c.currency_name} ({c.currency_symbol})
+                    </option>
+                  ))}
+                </select>
+                {errors.currency && (
+                  <span className="text-error text-xs mt-1">
+                    {errors.currency.message}
+                  </span>
+                )}
+              </div>
+
+              {/* Library */}
               <div>
                 <label className="label">
                   <span className="label-text">Library Type</span>
                 </label>
                 <select
-                  className={`select select-bordered w-full ${errors.lib ? "select-error" : ""}`}
-                  aria-invalid={!!errors.lib}
+                  className={`select select-bordered w-full ${
+                    errors.lib ? "select-error" : ""
+                  }`}
                   {...register("lib")}
                 >
                   <option value="scrapy">Scrapy</option>
@@ -243,7 +257,9 @@ const Page = () => {
                   <option value="requests">Requests</option>
                 </select>
                 {errors.lib && (
-                  <span className="text-error text-xs mt-1">{errors.lib.message}</span>
+                  <span className="text-error text-xs mt-1">
+                    {errors.lib.message}
+                  </span>
                 )}
               </div>
 

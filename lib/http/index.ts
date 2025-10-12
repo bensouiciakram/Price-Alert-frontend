@@ -9,3 +9,4 @@ export * from "./channels";
 export * from "./alerts";
 export * from "./demoTokens";
 export * from "./auth";
+export * from "./currency";
