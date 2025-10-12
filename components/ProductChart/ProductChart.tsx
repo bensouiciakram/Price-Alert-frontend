@@ -6,22 +6,24 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
+  Brush,
 } from "recharts";
-import { PriceHistory } from '@/lib';
-
-const data = [
-  { date: "Sep 25", price: 510 },
-  { date: "Sep 26", price: 505 },
-  { date: "Sep 27", price: 499 },
-  { date: "Sep 28", price: 480 },
-  { date: "Sep 29", price: 470 },
-];
+import { PriceHistory } from "@/lib";
 
 interface Props {
-  data:PriceHistory[]|undefined;
+  data: PriceHistory[] | undefined;
 }
 
-export default function PriceHistoryChart({data}:Props) {
+export default function PriceHistoryChart({ data }: Props) {
+  if (!data || data.length === 0) return null;
+
+  const displayedData = data.slice(-30);
+
+  const formatLabel = (value: string) => {
+    const [date, time] = value.split(" ");
+    return `${date}\n${time.slice(0, 5)}`;
+  };
+
   return (
     <div className="bg-white shadow-md rounded-xl p-6">
       <h2 className="text-lg font-semibold text-gray-800 mb-4">
@@ -29,15 +31,27 @@ export default function PriceHistoryChart({data}:Props) {
       </h2>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data}>
-            <XAxis dataKey="checked_at" />
+          <LineChart data={displayedData}>
+            <XAxis
+              dataKey="checked_at"
+              tickFormatter={formatLabel}
+              tick={{ fontSize: 11 }}
+              angle={-45}
+              textAnchor="end"
+              interval="preserveStartEnd"
+              height={60}
+            />
             <YAxis />
-            <Tooltip />
+            <Tooltip
+              labelFormatter={(value) => `Checked at: ${value}`}
+              formatter={(value: number) => [`$${value}`, "Price"]}
+            />
             <Line
               type="monotone"
               dataKey="price"
               stroke="#4f46e5"
               strokeWidth={3}
+              dot={false}
             />
           </LineChart>
         </ResponsiveContainer>
