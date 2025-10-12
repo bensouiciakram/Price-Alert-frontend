@@ -31,7 +31,7 @@ const Navbar = () => {
 
       <div className="flex-none">
         {/* 🔹 Mobile Menu */}
-        <details className="dropdown">
+        <details className="dropdown dropdown-end">
           <summary className="btn m-1 md:hidden">
             <CiMenuBurger size={20} />
           </summary>
