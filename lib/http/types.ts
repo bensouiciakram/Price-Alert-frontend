@@ -1,4 +1,10 @@
 // Types based on Django models
+export interface Currency {
+  id?: number;
+  currency_name: string;
+  currency_symbol: string;
+}
+
 export interface Website {
   id?: number;
   url: string;
