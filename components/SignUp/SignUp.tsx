@@ -1,8 +1,17 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import { useAuthStatus } from "@/lib/hooks/useAuth";
 
 const SignUp = () => {
+  const { data, isLoading } = useAuthStatus();
+  const loggedIn = data?.isAuthenticated ?? false;
+
+  // While loading, you can return nothing or a small skeleton
+  if (isLoading) return null;
+
+  if (loggedIn) return null; // 🔹 Hide SignUp if user is already logged in
+
   return (
     <div className="bg-gray-100 px-4 sm:px-6 lg:px-8 py-12">
       <div className="max-w-2xl mx-auto text-center">

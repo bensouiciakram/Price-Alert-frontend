@@ -55,6 +55,16 @@ export interface Channel {
   name: string;
 }
 
+export interface AlertMet {
+  id: number;
+  product_id: number;
+  product_name: string;
+  threshold_price: number;
+  triggered_at: string;
+  website_url: string;
+  new_price: number;
+}
+
 export interface Alert {
   id?: number;
   threshold: string;

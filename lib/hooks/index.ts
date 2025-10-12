@@ -7,6 +7,7 @@ export * from "./useChannels";
 export * from "./useAlerts";
 export * from "./useDemoTokens";
 export * from "./useCurrencies";
+export * from "./useAlertsMet";
 
 // Re-export React Query utilities for convenience
 export { useQueryClient } from "@tanstack/react-query";
