@@ -1,0 +1,29 @@
+# Node modules
+node_modules
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Next.js build output
+.next
+out
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Misc
+.idea
+.vscode
+*.swp
+*.swo
