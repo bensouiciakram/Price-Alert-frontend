@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_PRICE_ALERT_API_URL: ${NEXT_PUBLIC_PRICE_ALERT_API_URL}
     image: nextjs-app:latest
     ports:
       - "3001:3001"

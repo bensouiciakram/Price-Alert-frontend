@@ -14,6 +14,9 @@ RUN npm install --frozen-lockfile
 # 5. Copy all source files
 COPY . .
 
+# Accept build argument
+ARG NEXT_PUBLIC_PRICE_ALERT_API_URL
+ENV NEXT_PUBLIC_PRICE_ALERT_API_URL=$NEXT_PUBLIC_PRICE_ALERT_API_URL
 
 # 6. Build the Next.js app
 RUN npm run build
