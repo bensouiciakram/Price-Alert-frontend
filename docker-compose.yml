@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_PRICE_ALERT_API_URL: ${NEXT_PUBLIC_PRICE_ALERT_API_URL}
-    image: nextjs-app:latest
+    image: price_alert_web:latest
     ports:
       - "3001:3001"
     env_file:
