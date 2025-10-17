@@ -6,7 +6,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAddProduct } from "../../../lib";
 
-// ✅ Updated schema
+// ✅ Updated schema (removed "10")
 const addProductSchema = z.object({
   url: z.string().url("Enter a valid URL"),
   threshold: z
@@ -15,8 +15,10 @@ const addProductSchema = z.object({
     .refine((v) => !Number.isNaN(Number(v)) && Number(v) > 0, {
       message: "Enter a valid positive number",
     }),
-  // allow 1 minute scraping option
-  freq: z.enum(["10", "3600", "14400", "86400"]),
+  // ✅ Only allow safe frequencies
+  freq: z.enum(["3600", "14400", "86400"], {
+    required_error: "Please select a valid frequency",
+  }),
   name: z.string().optional(),
   channel: z
     .enum(["telegram", "gmail"])
@@ -36,18 +38,16 @@ const Page = () => {
     defaultValues: {
       url: "",
       threshold: "",
-      freq: "86400",
+      freq: "3600", // ✅ Default to hourly checks
       name: "",
       channel: "telegram",
     },
   });
 
-  // Use the React Query hook
   const addProduct = useAddProduct();
 
   const onSubmit = async (values: AddProductFormValues) => {
     try {
-      // Transform form data to match API expectations
       const productData = {
         product_url: values.url,
         channel: values.channel,
@@ -55,35 +55,29 @@ const Page = () => {
         frequency: Number(values.freq),
       };
 
-      // Call the mutation
       const result = await addProduct.mutateAsync(productData);
 
-      // Show success message
       console.log("Product added successfully:", result.message);
 
-      // Reset form on success
       reset({
         url: "",
         threshold: "",
-        freq: "86400",
+        freq: "3600",
         name: "",
         channel: "telegram",
       });
 
-      // Show success notification
       alert(
         "Product added successfully! We'll start monitoring it for price changes."
       );
     } catch (error) {
       console.error("Failed to add product:", error);
-      // Handle error - you could show a toast notification here
       alert("Failed to add product. Please try again.");
     }
   };
 
   return (
     <div className="bg-base-200 text-base-content min-h-screen">
-      {/* Main */}
       <main className="max-w-3xl mx-auto py-12 px-4">
         <div className="card shadow-xl bg-base-100">
           <div className="card-body">
@@ -93,7 +87,6 @@ const Page = () => {
               periodically and alert you when it drops below your threshold.
             </p>
 
-            {/* Success Message */}
             {addProduct.isSuccess && (
               <div className="alert alert-success">
                 <svg
@@ -116,7 +109,6 @@ const Page = () => {
               </div>
             )}
 
-            {/* Error Message */}
             {addProduct.isError && (
               <div className="alert alert-error">
                 <svg
@@ -188,6 +180,7 @@ const Page = () => {
                   )}
                 </div>
 
+                {/* ✅ Updated Frequency Options */}
                 <div>
                   <label className="label">
                     <span className="label-text">Check Frequency</span>
@@ -199,7 +192,6 @@ const Page = () => {
                     aria-invalid={!!errors.freq}
                     {...register("freq")}
                   >
-                    <option value="10">Every 1 minute</option>
                     <option value="3600">Every hour</option>
                     <option value="14400">Every 4 hours</option>
                     <option value="86400">Daily</option>
@@ -225,7 +217,7 @@ const Page = () => {
                 />
               </div>
 
-              {/* 🔔 Alert Channel */}
+              {/* Alert Channel */}
               <div>
                 <label className="label">
                   <span className="label-text">Alert Channel</span>
@@ -263,13 +255,12 @@ const Page = () => {
             </form>
 
             <p className="text-xs text-gray-400 mt-4">
-              Form includes client-side validation.
+              Form includes client-side validation and safe frequency limits.
             </p>
           </div>
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="max-w-7xl mx-auto text-center text-sm text-gray-500 py-8">
         © 2025 Price Monitor
       </footer>
