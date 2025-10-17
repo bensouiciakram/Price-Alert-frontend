@@ -2,7 +2,13 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['via.placeholder.com','dz.jumia.is'],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "dz.jumia.is",
+        pathname: "/**",
+      },
+    ],
   },
 };
 
