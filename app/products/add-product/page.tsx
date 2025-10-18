@@ -14,8 +14,8 @@ const addProductSchema = z.object({
     .refine((v) => !Number.isNaN(Number(v)) && Number(v) > 0, {
       message: "Enter a valid positive number",
     }),
-  freq: z.enum(["3600", "14400", "86400"], {
-    required_error: "Please select a valid frequency",
+  freq: z.enum(["", "3600", "14400", "86400"]).refine((val) => val !== "", {
+    message: "Please select a valid frequency",
   }),
   channel: z
     .enum(["telegram", "gmail"])
@@ -35,8 +35,8 @@ const Page = () => {
     defaultValues: {
       url: "",
       threshold: "",
-      freq: "3600",
-      channel: "telegram",
+      freq: "",
+      channel: "gmail",
     },
   });
 
@@ -189,6 +189,7 @@ const Page = () => {
                     style={{ boxShadow: "none" }}
                     {...register("freq")}
                   >
+                    <option value="">Select frequency</option>
                     <option value="3600">Every hour</option>
                     <option value="14400">Every 4 hours</option>
                     <option value="86400">Daily</option>
