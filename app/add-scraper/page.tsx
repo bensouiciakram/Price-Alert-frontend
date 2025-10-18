@@ -15,8 +15,8 @@ const scraperSchema = z.object({
   titleRegex: z.string().optional(),
   imageXPath: z.string().min(1, "Image XPath is required"),
   imageRegex: z.string().optional(),
-  lib: z.enum(["scrapy", "playwright", "requests"]),
-  currency: z.string().min(1, "Currency is required"), // still string, converted later
+  lib: z.enum(["playwright", "requests"]),
+  currency: z.string().min(1, "Currency is required"),
 });
 
 type ScraperFormValues = z.infer<typeof scraperSchema>;
@@ -37,7 +37,7 @@ const Page = () => {
       titleRegex: "",
       imageXPath: "",
       imageRegex: "",
-      lib: "scrapy",
+      lib: "playwright",
       currency: "",
     },
   });
@@ -60,7 +60,6 @@ const Page = () => {
       };
 
       const result = await addScraper.mutateAsync(scraperData);
-
       console.log("Scraper added successfully:", result.message);
       reset();
       alert("Scraper added successfully!");
@@ -72,27 +71,29 @@ const Page = () => {
 
   return (
     <div className="bg-base-200 text-base-content min-h-screen">
-      <section className="max-w-3xl mx-auto py-8 sm:py-12 px-4 sm:px-6">
-        <h2 className="text-xl sm:text-2xl font-bold mb-6 text-center">
+      <section className="max-w-3xl mx-auto py-12 sm:py-16 px-6 sm:px-8">
+        <h2 className="text-3xl font-bold mb-10 text-center">
           Create New Scraper
         </h2>
 
-        <div className="card bg-base-100 shadow-xl">
-          <div className="card-body">
+        <div className="card bg-base-100 shadow-xl rounded-2xl">
+          <div className="card-body p-8 sm:p-10">
             <form
-              className="form-control gap-6"
+              className="form-control gap-10"
               onSubmit={handleSubmit(onSubmit)}
               noValidate
             >
               {/* Website */}
-              <div>
-                <label className="label">
-                  <span className="label-text">Website</span>
+              <div className="space-y-3">
+                <label className="label pb-1">
+                  <span className="label-text font-semibold text-base">
+                    Website
+                  </span>
                 </label>
                 <input
                   type="url"
                   placeholder="https://example.com"
-                  className={`input input-bordered w-full ${
+                  className={`input input-bordered w-full h-11 focus:outline-none focus:ring-0 focus:border-base-300 ${
                     errors.website ? "input-error" : ""
                   }`}
                   {...register("website")}
@@ -104,17 +105,22 @@ const Page = () => {
                 )}
               </div>
 
-              {/* Price */}
-              <div className="grid gap-4">
-                <h3 className="font-semibold">Price Extraction</h3>
-                <div>
-                  <label className="label">
-                    <span className="label-text">Price XPath</span>
+              {/* Price Section */}
+              <div className="p-5 bg-base-200/60 rounded-xl space-y-5">
+                <h3 className="font-semibold text-lg text-base-content/90">
+                  Price Extraction
+                </h3>
+
+                <div className="space-y-2">
+                  <label className="label pb-1">
+                    <span className="label-text text-sm font-medium">
+                      Price XPath
+                    </span>
                   </label>
                   <input
                     type="text"
                     placeholder="//*[@id='priceblock_ourprice']"
-                    className={`input input-bordered w-full ${
+                    className={`input input-bordered w-full h-11 focus:outline-none focus:ring-0 focus:border-base-300 ${
                       errors.priceXPath ? "input-error" : ""
                     }`}
                     {...register("priceXPath")}
@@ -125,34 +131,42 @@ const Page = () => {
                     </span>
                   )}
                 </div>
-                <div>
-                  <label className="label">
-                    <span className="label-text">Price Cleanup Regex</span>
+
+                <div className="space-y-2">
+                  <label className="label pb-1">
+                    <span className="label-text text-sm font-medium">
+                      Price Cleanup Regex
+                    </span>
                   </label>
                   <input
                     type="text"
                     placeholder="[\\d.,]+"
-                    className="input input-bordered w-full"
+                    className="input input-bordered w-full h-11 focus:outline-none focus:ring-0 focus:border-base-300"
                     {...register("priceRegex")}
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    Use regex to extract only the price (example:{" "}
+                    Use regex to extract only the price (e.g.{" "}
                     <code>[\d.,]+</code>).
                   </p>
                 </div>
               </div>
 
-              {/* Title */}
-              <div className="grid gap-4">
-                <h3 className="font-semibold">Title Extraction</h3>
-                <div>
-                  <label className="label">
-                    <span className="label-text">Title XPath</span>
+              {/* Title Section */}
+              <div className="p-5 bg-base-200/60 rounded-xl space-y-5">
+                <h3 className="font-semibold text-lg text-base-content/90">
+                  Title Extraction
+                </h3>
+
+                <div className="space-y-2">
+                  <label className="label pb-1">
+                    <span className="label-text text-sm font-medium">
+                      Title XPath
+                    </span>
                   </label>
                   <input
                     type="text"
                     placeholder="//h1[@id='productTitle']"
-                    className={`input input-bordered w-full ${
+                    className={`input input-bordered w-full h-11 focus:outline-none focus:ring-0 focus:border-base-300 ${
                       errors.titleXPath ? "input-error" : ""
                     }`}
                     {...register("titleXPath")}
@@ -163,30 +177,38 @@ const Page = () => {
                     </span>
                   )}
                 </div>
-                <div>
-                  <label className="label">
-                    <span className="label-text">Title Cleanup Regex</span>
+
+                <div className="space-y-2">
+                  <label className="label pb-1">
+                    <span className="label-text text-sm font-medium">
+                      Title Cleanup Regex
+                    </span>
                   </label>
                   <input
                     type="text"
                     placeholder=".*"
-                    className="input input-bordered w-full"
+                    className="input input-bordered w-full h-11 focus:outline-none focus:ring-0 focus:border-base-300"
                     {...register("titleRegex")}
                   />
                 </div>
               </div>
 
-              {/* Image */}
-              <div className="grid gap-4">
-                <h3 className="font-semibold">Image Extraction</h3>
-                <div>
-                  <label className="label">
-                    <span className="label-text">Image XPath</span>
+              {/* Image Section */}
+              <div className="p-5 bg-base-200/60 rounded-xl space-y-5">
+                <h3 className="font-semibold text-lg text-base-content/90">
+                  Image Extraction
+                </h3>
+
+                <div className="space-y-2">
+                  <label className="label pb-1">
+                    <span className="label-text text-sm font-medium">
+                      Image XPath
+                    </span>
                   </label>
                   <input
                     type="text"
                     placeholder="//img[@id='main-image']/@src"
-                    className={`input input-bordered w-full ${
+                    className={`input input-bordered w-full h-11 focus:outline-none focus:ring-0 focus:border-base-300 ${
                       errors.imageXPath ? "input-error" : ""
                     }`}
                     {...register("imageXPath")}
@@ -197,26 +219,31 @@ const Page = () => {
                     </span>
                   )}
                 </div>
-                <div>
-                  <label className="label">
-                    <span className="label-text">Image Cleanup Regex</span>
+
+                <div className="space-y-2">
+                  <label className="label pb-1">
+                    <span className="label-text text-sm font-medium">
+                      Image Cleanup Regex
+                    </span>
                   </label>
                   <input
                     type="text"
                     placeholder="https?://.*"
-                    className="input input-bordered w-full"
+                    className="input input-bordered w-full h-11 focus:outline-none focus:ring-0 focus:border-base-300"
                     {...register("imageRegex")}
                   />
                 </div>
               </div>
 
-              {/* ✅ Currency Selector (before library) */}
-              <div>
-                <label className="label">
-                  <span className="label-text">Currency</span>
+              {/* Currency */}
+              <div className="space-y-3">
+                <label className="label pb-1">
+                  <span className="label-text font-semibold text-base">
+                    Currency
+                  </span>
                 </label>
                 <select
-                  className={`select select-bordered w-full ${
+                  className={`select select-bordered w-full h-11 focus:outline-none focus:ring-0 focus:border-base-300 ${
                     errors.currency ? "select-error" : ""
                   }`}
                   {...register("currency")}
@@ -241,17 +268,18 @@ const Page = () => {
               </div>
 
               {/* Library */}
-              <div>
-                <label className="label">
-                  <span className="label-text">Library Type</span>
+              <div className="space-y-3">
+                <label className="label pb-1">
+                  <span className="label-text font-semibold text-base">
+                    Library Type
+                  </span>
                 </label>
                 <select
-                  className={`select select-bordered w-full ${
+                  className={`select select-bordered w-full h-11 focus:outline-none focus:ring-0 focus:border-base-300 ${
                     errors.lib ? "select-error" : ""
                   }`}
                   {...register("lib")}
                 >
-                  <option value="scrapy">Scrapy</option>
                   <option value="playwright">Playwright</option>
                   <option value="requests">Requests</option>
                 </select>
@@ -263,10 +291,10 @@ const Page = () => {
               </div>
 
               {/* Submit */}
-              <div className="text-center">
+              <div className="text-center pt-6">
                 <button
                   type="submit"
-                  className="btn btn-primary w-full sm:w-auto"
+                  className="btn btn-primary w-full sm:w-auto px-8 py-3 text-base"
                   disabled={addScraper.isPending}
                 >
                   {addScraper.isPending ? "Saving..." : "Save Scraper"}
