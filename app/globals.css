@@ -1,7 +1,423 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-
 @theme {
-    --color-primary:'rgb(79 70 229)';
+  --color-primary: #f0b429;
+  --color-primary-content: #0a0a0f;
+
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+  --font-serif: var(--font-dm-serif), Georgia, serif;
+  --font-mono: var(--font-jetbrains), monospace;
+}
+
+/* =============================================
+   DARK FINANCE TERMINAL THEME OVERRIDES
+   ============================================= */
+
+html[data-theme="dark"] {
+  --color-base-100: #12121a;
+  --color-base-200: #0a0a0f;
+  --color-base-300: #1a1a2e;
+  --color-base-content: #e2e8f0;
+
+  --color-primary: #f0b429;
+  --color-primary-content: #0a0a0f;
+
+  --color-secondary: #1a1a2e;
+  --color-secondary-content: #e2e8f0;
+
+  --color-accent: #00e676;
+  --color-accent-content: #0a0a0f;
+
+  --color-neutral: #1a1a2e;
+  --color-neutral-content: #e2e8f0;
+
+  --color-info: #448aff;
+  --color-info-content: #0a0a0f;
+
+  --color-success: #00e676;
+  --color-success-content: #0a0a0f;
+
+  --color-warning: #f0b429;
+  --color-warning-content: #0a0a0f;
+
+  --color-error: #ff5252;
+  --color-error-content: #0a0a0f;
+}
+
+/* =============================================
+   ANIMATION KEYFRAMES
+   ============================================= */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(240, 180, 41, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(240, 180, 41, 0.6);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes breathe {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes borderGlow {
+  0%, 100% {
+    border-color: rgba(240, 180, 41, 0.1);
+  }
+  50% {
+    border-color: rgba(240, 180, 41, 0.4);
+  }
+}
+
+@keyframes textShimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* =============================================
+   UTILITY CLASSES
+   ============================================= */
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-fade-in-down {
+  animation: fadeInDown 0.5s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-breathe {
+  animation: breathe 3s ease-in-out infinite;
+}
+
+.animate-border-glow {
+  animation: borderGlow 2s ease-in-out infinite;
+}
+
+/* Stagger delays */
+.stagger-1 { animation-delay: 0.1s; opacity: 0; }
+.stagger-2 { animation-delay: 0.2s; opacity: 0; }
+.stagger-3 { animation-delay: 0.3s; opacity: 0; }
+.stagger-4 { animation-delay: 0.4s; opacity: 0; }
+.stagger-5 { animation-delay: 0.5s; opacity: 0; }
+.stagger-6 { animation-delay: 0.6s; opacity: 0; }
+.stagger-7 { animation-delay: 0.7s; opacity: 0; }
+.stagger-8 { animation-delay: 0.8s; opacity: 0; }
+
+/* =============================================
+   GLASS MORPHISM
+   ============================================= */
+
+.glass {
+  background: rgba(26, 26, 46, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.glass-strong {
+  background: rgba(18, 18, 26, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-subtle {
+  background: rgba(26, 26, 46, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* =============================================
+   BACKGROUND PATTERNS
+   ============================================= */
+
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(240, 180, 41, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(240, 180, 41, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.dot-bg {
+  background-image: radial-gradient(rgba(240, 180, 41, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* =============================================
+   NOISE TEXTURE OVERLAY
+   ============================================= */
+
+.noise-overlay {
+  position: relative;
+}
+
+.noise-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+/* =============================================
+   GLOW EFFECTS
+   ============================================= */
+
+.glow-amber {
+  box-shadow: 0 0 20px rgba(240, 180, 41, 0.15);
+}
+
+.glow-amber-strong {
+  box-shadow: 0 0 40px rgba(240, 180, 41, 0.25);
+}
+
+.glow-green {
+  box-shadow: 0 0 20px rgba(0, 230, 118, 0.15);
+}
+
+.glow-red {
+  box-shadow: 0 0 20px rgba(255, 82, 82, 0.15);
+}
+
+/* =============================================
+   TEXT EFFECTS
+   ============================================= */
+
+.text-gradient-amber {
+  background: linear-gradient(135deg, #f0b429 0%, #ffd700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-green {
+  background: linear-gradient(135deg, #00e676 0%, #69f0ae 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-shimmer {
+  background: linear-gradient(90deg, #e2e8f0 0%, #f0b429 50%, #e2e8f0 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: textShimmer 3s linear infinite;
+}
+
+/* =============================================
+   CARD & INTERACTIVE EFFECTS
+   ============================================= */
+
+.card-lift {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.card-glow {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card-glow:hover {
+  box-shadow: 0 0 30px rgba(240, 180, 41, 0.1);
+  border-color: rgba(240, 180, 41, 0.2);
+}
+
+/* =============================================
+   SKELETON LOADING
+   ============================================= */
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #1a1a2e 25%, #252540 50%, #1a1a2e 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* =============================================
+   SCROLLBAR STYLING
+   ============================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1a1a2e;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2a2a4e;
+}
+
+/* =============================================
+   FOCUS RING
+   ============================================= */
+
+*:focus-visible {
+  outline: 2px solid #f0b429;
+  outline-offset: 2px;
+}
+
+/* =============================================
+   FORM INPUT ENHANCEMENTS
+   ============================================= */
+
+.input-glow:focus {
+  box-shadow: 0 0 0 3px rgba(240, 180, 41, 0.15);
+  border-color: rgba(240, 180, 41, 0.4);
+}
+
+/* =============================================
+   HERO GRADIENT BACKGROUND
+   ============================================= */
+
+.hero-gradient {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(240, 180, 41, 0.12), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 50%, rgba(0, 230, 118, 0.05), transparent),
+    linear-gradient(180deg, #0a0a0f 0%, #12121a 100%);
+}
+
+/* =============================================
+   PRICE NUMBER FONT
+   ============================================= */
+
+.font-mono-price {
+  font-family: var(--font-jetbrains), 'JetBrains Mono', monospace;
+  font-feature-settings: 'tnum' 1;
+  font-variant-numeric: tabular-nums;
 }
