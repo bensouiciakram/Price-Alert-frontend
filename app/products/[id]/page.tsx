@@ -16,7 +16,7 @@ const Page = () => {
   const productId = Number(params?.id);
 
   const { data: product, isLoading: productLoading } = useProduct(productId);
-  const currencySymbol = product?.website.currency.currency_symbol;
+  const currencySymbol = product?.website?.currency?.currency_symbol ?? "$";
   const firstAlertId: number | undefined =
     Array.isArray(product?.alerts) && product.alerts.length
       ? product.alerts[0]

@@ -57,8 +57,8 @@ const Card = ({ product_id, meta, website }: Props) => {
           <div className="pt-2 border-t border-white/5">
             <p className="text-xs text-base-content/40 mb-1">Current Price</p>
             <p className="font-mono-price text-2xl font-bold text-success">
-              {website.currency.currency_symbol}
-              {price?.toFixed(2)}
+              {website?.currency?.currency_symbol ?? ""}
+              {price ? Number(price).toFixed(2) : "—"}
             </p>
           </div>
 
