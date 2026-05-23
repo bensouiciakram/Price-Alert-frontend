@@ -83,7 +83,7 @@ export default function PriceHistoryChart({ data, currencySymbol = "$" }: Props)
               }}
               labelStyle={{ color: "rgba(226, 232, 240, 0.6)", fontSize: "12px", marginBottom: "4px" }}
               itemStyle={{ color: "#f0b429", fontSize: "14px", fontWeight: 600 }}
-              formatter={(value: number) => [`${currencySymbol}${value.toFixed(2)}`, "Price"]}
+              formatter={(value) => [`${currencySymbol}${Number(value).toFixed(2)}`, "Price"]}
               labelFormatter={(value) => `Checked: ${value}`}
             />
             <Area
