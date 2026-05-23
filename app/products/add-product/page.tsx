@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAddProduct } from "../../../lib";
+import { FaLink, FaTag, FaClock, FaPaperPlane, FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
 
 const addProductSchema = z.object({
   url: z.string().url("Enter a valid URL"),
@@ -61,132 +62,112 @@ const Page = () => {
         channel: "telegram",
       });
 
-      alert(
-        "Product added successfully! We'll start monitoring it for price changes."
-      );
+      alert("Product added successfully! We'll start monitoring it for price changes.");
     } catch (error) {
       console.error("Failed to add product:", error);
       alert("Failed to add product. Please try again.");
     }
   };
 
+  const formFields = [
+    {
+      name: "url" as const,
+      label: "Product URL",
+      icon: FaLink,
+      type: "url",
+      placeholder: "https://www.amazon.com/...",
+    },
+    {
+      name: "threshold" as const,
+      label: "Desired Price",
+      icon: FaTag,
+      type: "number",
+      placeholder: "e.g. 450.00",
+    },
+  ];
+
   return (
-    <div className="bg-base-200 text-base-content min-h-screen">
-      <section className="max-w-3xl mx-auto py-12 sm:py-16 px-6 sm:px-8">
-        <h2 className="text-3xl font-bold mb-10 text-center">
-          Add Product to Monitor
-        </h2>
+    <div className="min-h-screen bg-base-200">
+      <section className="max-w-2xl mx-auto py-12 sm:py-16 px-4 sm:px-6">
+        {/* Header */}
+        <div className="text-center mb-10 animate-fade-in-up">
+          <h2 className="font-serif text-3xl sm:text-4xl text-base-content mb-3">
+            Add Product to Monitor
+          </h2>
+          <p className="text-base-content/50 max-w-md mx-auto">
+            Paste a product URL and set your target price. We will track it and alert you on drops.
+          </p>
+        </div>
 
-        <div className="card bg-base-100 shadow-xl rounded-2xl">
-          <div className="card-body p-8 sm:p-10 space-y-8">
-            {/* Alerts */}
+        {/* Form Card */}
+        <div className="card bg-base-100 border border-white/5 rounded-2xl overflow-hidden animate-fade-in-up stagger-1">
+          <div className="card-body p-6 sm:p-8 space-y-6">
+            {/* Success / Error Alerts */}
             {addProduct.isSuccess && (
-              <div className="alert alert-success">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="stroke-current shrink-0 h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <span>
-                  Product added successfully! We&apos;ll start monitoring it for
-                  price changes.
-                </span>
+              <div className="flex items-center gap-3 p-4 rounded-xl bg-success/10 border border-success/20 text-success">
+                <FaCheckCircle className="w-5 h-5 flex-shrink-0" />
+                <span className="text-sm font-medium">Product added successfully! Monitoring started.</span>
               </div>
             )}
-
             {addProduct.isError && (
-              <div className="alert alert-error">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="stroke-current shrink-0 h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <span>
-                  {addProduct.error?.message ||
-                    "Failed to add product. Please try again."}
+              <div className="flex items-center gap-3 p-4 rounded-xl bg-error/10 border border-error/20 text-error">
+                <FaExclamationCircle className="w-5 h-5 flex-shrink-0" />
+                <span className="text-sm font-medium">
+                  {addProduct.error?.message || "Failed to add product."}
                 </span>
               </div>
             )}
 
-            {/* Form */}
-            <form
-              className="form-control space-y-8"
-              onSubmit={handleSubmit(onSubmit)}
-              noValidate
-            >
+            <form className="space-y-6" onSubmit={handleSubmit(onSubmit)} noValidate>
               {/* URL */}
               <div className="space-y-2">
-                <label className="label pb-1">
-                  <span className="label-text font-semibold text-base">
-                    Product URL
-                  </span>
+                <label className="flex items-center gap-2 text-sm font-medium text-base-content/80">
+                  <FaLink className="w-4 h-4 text-primary" />
+                  Product URL
                 </label>
                 <input
                   type="url"
                   placeholder="https://www.amazon.com/..."
-                  className={`input input-bordered w-full h-11 focus:outline-none focus:ring-0 ${
-                    errors.url ? "input-error" : ""
+                  className={`input input-bordered w-full bg-base-200 border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300 ${
+                    errors.url ? "border-error/50" : ""
                   }`}
                   {...register("url")}
                 />
                 {errors.url && (
-                  <span className="text-error text-xs mt-1">
-                    {errors.url.message}
-                  </span>
+                  <span className="text-error text-xs">{errors.url.message}</span>
                 )}
               </div>
 
               {/* Price and Frequency */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="label pb-1">
-                    <span className="label-text font-semibold text-base">
-                      Desired Price (USD)
-                    </span>
+                  <label className="flex items-center gap-2 text-sm font-medium text-base-content/80">
+                    <FaTag className="w-4 h-4 text-primary" />
+                    Desired Price (USD)
                   </label>
                   <input
                     type="number"
                     step="0.01"
                     placeholder="e.g. 450.00"
-                    className={`input input-bordered w-full h-11 focus:outline-none focus:ring-0 ${
-                      errors.threshold ? "input-error" : ""
+                    className={`input input-bordered w-full bg-base-200 border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300 ${
+                      errors.threshold ? "border-error/50" : ""
                     }`}
                     {...register("threshold")}
                   />
                   {errors.threshold && (
-                    <span className="text-error text-xs mt-1">
-                      {errors.threshold.message}
-                    </span>
+                    <span className="text-error text-xs">{errors.threshold.message}</span>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <label className="label pb-1">
-                    <span className="label-text font-semibold text-base">
-                      Check Frequency
-                    </span>
+                  <label className="flex items-center gap-2 text-sm font-medium text-base-content/80">
+                    <FaClock className="w-4 h-4 text-primary" />
+                    Check Frequency
                   </label>
                   <select
-                    className={`select select-bordered w-full h-11 focus:outline-none focus:ring-0 focus:shadow-none focus:border-base-300 ${
-                      errors.freq ? "select-error" : ""
+                    className={`select select-bordered w-full bg-base-200 border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300 ${
+                      errors.freq ? "border-error/50" : ""
                     }`}
-                    style={{ boxShadow: "none" }}
                     {...register("freq")}
                   >
                     <option value="">Select frequency</option>
@@ -195,59 +176,44 @@ const Page = () => {
                     <option value="86400">Daily</option>
                   </select>
                   {errors.freq && (
-                    <span className="text-error text-xs mt-1">
-                      {errors.freq.message}
-                    </span>
+                    <span className="text-error text-xs">{errors.freq.message}</span>
                   )}
                 </div>
               </div>
 
               {/* Alert Channel */}
               <div className="space-y-2">
-                <label className="label pb-1">
-                  <span className="label-text font-semibold text-base">
-                    Alert Channel
-                  </span>
+                <label className="flex items-center gap-2 text-sm font-medium text-base-content/80">
+                  <FaPaperPlane className="w-4 h-4 text-primary" />
+                  Alert Channel
                 </label>
                 <select
-                  className={`select select-bordered w-full h-11 focus:outline-none focus:ring-0 focus:shadow-none focus:border-base-300 ${
-                    errors.channel ? "select-error" : ""
+                  className={`select select-bordered w-full bg-base-200 border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300 ${
+                    errors.channel ? "border-error/50" : ""
                   }`}
-                  style={{ boxShadow: "none" }}
                   {...register("channel")}
                 >
                   <option value="telegram">Telegram</option>
                   <option value="gmail">Gmail</option>
                 </select>
                 {errors.channel && (
-                  <span className="text-error text-xs mt-1">
-                    {errors.channel.message}
-                  </span>
+                  <span className="text-error text-xs">{errors.channel.message}</span>
                 )}
               </div>
 
-              {/* Buttons */}
-              <div className="text-center pt-2">
-                <button
-                  type="submit"
-                  className="btn btn-primary w-full sm:w-auto px-8 py-3 text-base"
-                  disabled={addProduct.isPending}
-                >
-                  {addProduct.isPending ? "Adding..." : "Add Product"}
-                </button>
-              </div>
+              {/* Submit */}
+              <button
+                type="submit"
+                className="btn btn-primary w-full gap-2"
+                disabled={addProduct.isPending}
+              >
+                <FaPaperPlane className="w-4 h-4" />
+                {addProduct.isPending ? "Adding..." : "Add Product"}
+              </button>
             </form>
-
-            <p className="text-xs text-gray-400 text-center">
-              Form includes client-side validation and safe frequency limits.
-            </p>
           </div>
         </div>
       </section>
-
-      <footer className="max-w-7xl mx-auto text-center text-sm text-gray-500 py-8">
-        © 2025 Price Monitor
-      </footer>
     </div>
   );
 };

@@ -1,74 +1,89 @@
 import React from "react";
+import { FaKey, FaBell, FaUser, FaRegenerate } from "react-icons/fa6";
 
 const Page = () => {
   return (
-    <div className="bg-base-200 text-base-content min-h-screen">
-      {/* Main */}
-      <main className="max-w-3xl mx-auto py-12 px-4">
-        <div className="card bg-base-100 shadow-xl">
-          <div className="card-body space-y-8">
-            <h2 className="card-title text-2xl">Settings</h2>
+    <div className="min-h-screen bg-base-200">
+      <main className="max-w-2xl mx-auto py-12 sm:py-16 px-4 sm:px-6">
+        {/* Header */}
+        <div className="mb-10 animate-fade-in-up">
+          <h2 className="font-serif text-3xl sm:text-4xl text-base-content mb-2">Settings</h2>
+          <p className="text-base-content/50">Manage your account and notification preferences.</p>
+        </div>
 
+        <div className="card bg-base-100 border border-white/5 rounded-2xl overflow-hidden animate-fade-in-up stagger-1">
+          <div className="card-body p-6 sm:p-8 space-y-10">
             {/* Demo Token */}
-            <section className="space-y-2">
-              <h3 className="text-sm font-medium">Demo Access Token</h3>
-              <p className="text-sm text-gray-500">
-                Share this token to allow someone to try your demo. Tokens can
-                be revoked or regenerated.
+            <section className="space-y-4">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <FaKey className="w-4 h-4 text-primary" />
+                </div>
+                <h3 className="font-semibold text-base-content">Demo Access Token</h3>
+              </div>
+              <p className="text-sm text-base-content/50">
+                Share this token to allow someone to try your demo.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 mt-3">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <input
                   type="text"
                   readOnly
                   value="demo123"
-                  className="input input-bordered flex-1 bg-base-200"
+                  className="input input-bordered flex-1 bg-base-200 border-white/10 text-base-content/70 font-mono"
                 />
-                <button className="btn btn-primary">Regenerate</button>
-                <button className="btn btn-outline">Revoke</button>
+                <button className="btn btn-primary btn-sm sm:btn-md">Regenerate</button>
+                <button className="btn btn-outline btn-sm sm:btn-md border-white/10">Revoke</button>
               </div>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-base-content/30">
                 Current token expires: 2025-10-01 23:59
               </p>
             </section>
 
+            <div className="h-px bg-white/5" />
+
             {/* Notifications */}
-            <section>
-              <h3 className="text-sm font-medium">Notification Preferences</h3>
-              <p className="text-sm text-gray-500 mb-2">
-                (Demo only — UI only)
-              </p>
-              <div className="form-control gap-2">
-                <label className="label cursor-pointer justify-start gap-3">
-                  <input type="checkbox" defaultChecked className="checkbox" />
-                  <span className="label-text">Email alerts</span>
-                </label>
-                <label className="label cursor-pointer justify-start gap-3">
-                  <input type="checkbox" className="checkbox" />
-                  <span className="label-text">Slack alerts</span>
-                </label>
-                <label className="label cursor-pointer justify-start gap-3">
-                  <input type="checkbox" className="checkbox" />
-                  <span className="label-text">Telegram alerts</span>
-                </label>
+            <section className="space-y-4">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-success/10 flex items-center justify-center">
+                  <FaBell className="w-4 h-4 text-success" />
+                </div>
+                <h3 className="font-semibold text-base-content">Notification Preferences</h3>
+              </div>
+              <div className="space-y-3">
+                {["Email alerts", "Slack alerts", "Telegram alerts"].map((label, i) => (
+                  <label
+                    key={label}
+                    className="flex items-center gap-3 p-3 rounded-xl bg-base-300/20 border border-white/5 cursor-pointer hover:bg-white/[0.02] transition-colors duration-200"
+                  >
+                    <input
+                      type="checkbox"
+                      defaultChecked={i === 0}
+                      className="checkbox checkbox-primary checkbox-sm"
+                    />
+                    <span className="text-sm text-base-content/80">{label}</span>
+                  </label>
+                ))}
               </div>
             </section>
 
+            <div className="h-px bg-white/5" />
+
             {/* Account */}
-            <section>
-              <h3 className="text-sm font-medium">Account</h3>
-              <div className="mt-3 flex flex-wrap gap-3">
-                <button className="btn btn-outline">Change Password</button>
-                <button className="btn btn-error text-white">Logout</button>
+            <section className="space-y-4">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-info/10 flex items-center justify-center">
+                  <FaUser className="w-4 h-4 text-info" />
+                </div>
+                <h3 className="font-semibold text-base-content">Account</h3>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <button className="btn btn-outline border-white/10 hover:bg-white/5">Change Password</button>
+                <button className="btn btn-error btn-outline">Logout</button>
               </div>
             </section>
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="max-w-7xl mx-auto text-center text-sm text-gray-500 py-8">
-        © 2025 Price Monitor
-      </footer>
     </div>
   );
 };

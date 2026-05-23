@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import { FaArrowTrendDown, FaExternalLinkAlt } from "react-icons/fa6";
 
 interface AlertBoxProps {
   productId: number;
@@ -9,7 +10,7 @@ interface AlertBoxProps {
   triggeredAt: string;
   threshold: number;
   newPrice: number;
-  currencySymbol: string; // ✅ new prop
+  currencySymbol: string;
 }
 
 const AlertBox: React.FC<AlertBoxProps> = ({
@@ -21,35 +22,57 @@ const AlertBox: React.FC<AlertBoxProps> = ({
   newPrice,
   currencySymbol,
 }) => {
+  const savings = threshold - newPrice;
+  const savingsPercent = ((savings / threshold) * 100).toFixed(1);
+
   return (
-    <Link href={`/products/${productId}`}>
-      <div className="card bg-base-100 shadow-md hover:shadow-lg transition-all duration-300 border border-base-300">
-        <div className="card-body">
-          <h2 className="card-title text-lg font-semibold">
-            {productTitle} — <span className="text-success">Price Dropped</span>
-          </h2>
+    <Link href={`/products/${productId}`} className="group block">
+      <div className="card bg-base-100 border border-white/5 rounded-2xl overflow-hidden card-lift card-glow animate-pulse-glow h-full">
+        <div className="card-body p-5 space-y-4">
+          {/* Header */}
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-success/10 flex items-center justify-center flex-shrink-0">
+                <FaArrowTrendDown className="w-4 h-4 text-success" />
+              </div>
+              <span className="text-xs font-semibold text-success uppercase tracking-wider">
+                Price Dropped
+              </span>
+            </div>
+            <span className="text-xs text-base-content/30 flex-shrink-0">{triggeredAt}</span>
+          </div>
 
-          <p className="text-sm text-gray-500">
-            <a
-              href={websiteUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link link-hover text-blue-600"
-            >
-              {websiteUrl}
-            </a>{" "}
-            • Triggered: {triggeredAt}
-          </p>
+          {/* Title */}
+          <h3 className="font-semibold text-base-content group-hover:text-primary transition-colors duration-300 line-clamp-2 leading-snug">
+            {productTitle}
+          </h3>
 
-          <div className="mt-2 space-y-1">
-            <p>
-              <span className="font-semibold">Threshold:</span> {currencySymbol}
-              {threshold}
-            </p>
-            <p>
-              <span className="font-semibold">New Price:</span> {currencySymbol}
-              {newPrice}
-            </p>
+          {/* Website */}
+          <div className="flex items-center gap-2 text-xs text-base-content/40">
+            <FaExternalLinkAlt className="w-3 h-3" />
+            <span className="truncate">{websiteUrl}</span>
+          </div>
+
+          {/* Prices */}
+          <div className="pt-3 border-t border-white/5 space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-base-content/40">Threshold</span>
+              <span className="font-mono-price text-sm text-base-content/60 line-through">
+                {currencySymbol}{threshold.toFixed(2)}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-base-content/40">New Price</span>
+              <span className="font-mono-price text-lg font-bold text-success">
+                {currencySymbol}{newPrice.toFixed(2)}
+              </span>
+            </div>
+            <div className="flex justify-between items-center pt-1">
+              <span className="text-xs text-success/70">You Save</span>
+              <span className="text-sm font-semibold text-success">
+                {currencySymbol}{savings.toFixed(2)} ({savingsPercent}%)
+              </span>
+            </div>
           </div>
         </div>
       </div>

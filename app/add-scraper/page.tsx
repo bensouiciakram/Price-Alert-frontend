@@ -6,6 +6,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAddScraper } from "@/lib";
 import { useCurrencies } from "@/lib/hooks";
+import { FaGlobe, FaCode, FaImage, FaBook, FaWrench, FaSave } from "react-icons/fa";
 
 const scraperSchema = z.object({
   website: z.string().url("Enter a valid URL"),
@@ -69,167 +70,125 @@ const Page = () => {
     }
   };
 
-  return (
-    <div className="bg-base-200 text-base-content min-h-screen">
-      <section className="max-w-3xl mx-auto py-12 sm:py-16 px-6 sm:px-8">
-        <h2 className="text-3xl font-bold mb-10 text-center">
-          Create New Scraper
-        </h2>
+  const SectionHeader = ({ icon: Icon, title }: { icon: any; title: string }) => (
+    <div className="flex items-center gap-2 mb-4 pb-3 border-b border-white/5">
+      <Icon className="w-4 h-4 text-primary" />
+      <h3 className="font-semibold text-base-content">{title}</h3>
+    </div>
+  );
 
-        <div className="card bg-base-100 shadow-xl rounded-2xl">
-          <div className="card-body p-8 sm:p-10">
-            <form
-              className="form-control gap-10"
-              onSubmit={handleSubmit(onSubmit)}
-              noValidate
-            >
+  return (
+    <div className="min-h-screen bg-base-200">
+      <section className="max-w-2xl mx-auto py-12 sm:py-16 px-4 sm:px-6">
+        {/* Header */}
+        <div className="text-center mb-10 animate-fade-in-up">
+          <h2 className="font-serif text-3xl sm:text-4xl text-base-content mb-3">
+            Create New Scraper
+          </h2>
+          <p className="text-base-content/50 max-w-md mx-auto">
+            Configure selectors to extract product data from any e-commerce website.
+          </p>
+        </div>
+
+        <div className="card bg-base-100 border border-white/5 rounded-2xl overflow-hidden animate-fade-in-up stagger-1">
+          <div className="card-body p-6 sm:p-8">
+            <form className="space-y-8" onSubmit={handleSubmit(onSubmit)} noValidate>
               {/* Website */}
               <div className="space-y-3">
-                <label className="label pb-1">
-                  <span className="label-text font-semibold text-base">
-                    Website
-                  </span>
-                </label>
+                <SectionHeader icon={FaGlobe} title="Website" />
                 <input
                   type="url"
                   placeholder="https://example.com"
-                  className={`input input-bordered w-full h-11 focus:outline-none focus:ring-0 focus:border-base-300 ${
-                    errors.website ? "input-error" : ""
+                  className={`input input-bordered w-full bg-base-200 border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300 ${
+                    errors.website ? "border-error/50" : ""
                   }`}
                   {...register("website")}
                 />
                 {errors.website && (
-                  <span className="text-error text-xs mt-1">
-                    {errors.website.message}
-                  </span>
+                  <span className="text-error text-xs">{errors.website.message}</span>
                 )}
               </div>
 
               {/* Price Section */}
-              <div className="p-5 bg-base-200/60 rounded-xl space-y-5">
-                <h3 className="font-semibold text-lg text-base-content/90">
-                  Price Extraction
-                </h3>
-
+              <div className="p-5 rounded-xl bg-base-300/20 border border-white/5 space-y-4">
+                <SectionHeader icon={FaCode} title="Price Extraction" />
                 <div className="space-y-2">
-                  <label className="label pb-1">
-                    <span className="label-text text-sm font-medium">
-                      Price XPath
-                    </span>
-                  </label>
+                  <label className="text-sm font-medium text-base-content/70">Price XPath</label>
                   <input
                     type="text"
                     placeholder="//*[@id='priceblock_ourprice']"
-                    className={`input input-bordered w-full h-11 focus:outline-none focus:ring-0 focus:border-base-300 ${
-                      errors.priceXPath ? "input-error" : ""
+                    className={`input input-bordered w-full bg-base-200 border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300 ${
+                      errors.priceXPath ? "border-error/50" : ""
                     }`}
                     {...register("priceXPath")}
                   />
                   {errors.priceXPath && (
-                    <span className="text-error text-xs mt-1">
-                      {errors.priceXPath.message}
-                    </span>
+                    <span className="text-error text-xs">{errors.priceXPath.message}</span>
                   )}
                 </div>
-
                 <div className="space-y-2">
-                  <label className="label pb-1">
-                    <span className="label-text text-sm font-medium">
-                      Price Cleanup Regex
-                    </span>
-                  </label>
+                  <label className="text-sm font-medium text-base-content/70">Price Cleanup Regex</label>
                   <input
                     type="text"
                     placeholder="[\\d.,]+"
-                    className="input input-bordered w-full h-11 focus:outline-none focus:ring-0 focus:border-base-300"
+                    className="input input-bordered w-full bg-base-200 border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300"
                     {...register("priceRegex")}
                   />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Use regex to extract only the price (e.g.{" "}
-                    <code>[\d.,]+</code>).
-                  </p>
+                  <p className="text-xs text-base-content/40">Extract only the price value.</p>
                 </div>
               </div>
 
               {/* Title Section */}
-              <div className="p-5 bg-base-200/60 rounded-xl space-y-5">
-                <h3 className="font-semibold text-lg text-base-content/90">
-                  Title Extraction
-                </h3>
-
+              <div className="p-5 rounded-xl bg-base-300/20 border border-white/5 space-y-4">
+                <SectionHeader icon={FaBook} title="Title Extraction" />
                 <div className="space-y-2">
-                  <label className="label pb-1">
-                    <span className="label-text text-sm font-medium">
-                      Title XPath
-                    </span>
-                  </label>
+                  <label className="text-sm font-medium text-base-content/70">Title XPath</label>
                   <input
                     type="text"
                     placeholder="//h1[@id='productTitle']"
-                    className={`input input-bordered w-full h-11 focus:outline-none focus:ring-0 focus:border-base-300 ${
-                      errors.titleXPath ? "input-error" : ""
+                    className={`input input-bordered w-full bg-base-200 border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300 ${
+                      errors.titleXPath ? "border-error/50" : ""
                     }`}
                     {...register("titleXPath")}
                   />
                   {errors.titleXPath && (
-                    <span className="text-error text-xs mt-1">
-                      {errors.titleXPath.message}
-                    </span>
+                    <span className="text-error text-xs">{errors.titleXPath.message}</span>
                   )}
                 </div>
-
                 <div className="space-y-2">
-                  <label className="label pb-1">
-                    <span className="label-text text-sm font-medium">
-                      Title Cleanup Regex
-                    </span>
-                  </label>
+                  <label className="text-sm font-medium text-base-content/70">Title Cleanup Regex</label>
                   <input
                     type="text"
                     placeholder=".*"
-                    className="input input-bordered w-full h-11 focus:outline-none focus:ring-0 focus:border-base-300"
+                    className="input input-bordered w-full bg-base-200 border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300"
                     {...register("titleRegex")}
                   />
                 </div>
               </div>
 
               {/* Image Section */}
-              <div className="p-5 bg-base-200/60 rounded-xl space-y-5">
-                <h3 className="font-semibold text-lg text-base-content/90">
-                  Image Extraction
-                </h3>
-
+              <div className="p-5 rounded-xl bg-base-300/20 border border-white/5 space-y-4">
+                <SectionHeader icon={FaImage} title="Image Extraction" />
                 <div className="space-y-2">
-                  <label className="label pb-1">
-                    <span className="label-text text-sm font-medium">
-                      Image XPath
-                    </span>
-                  </label>
+                  <label className="text-sm font-medium text-base-content/70">Image XPath</label>
                   <input
                     type="text"
                     placeholder="//img[@id='main-image']/@src"
-                    className={`input input-bordered w-full h-11 focus:outline-none focus:ring-0 focus:border-base-300 ${
-                      errors.imageXPath ? "input-error" : ""
+                    className={`input input-bordered w-full bg-base-200 border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300 ${
+                      errors.imageXPath ? "border-error/50" : ""
                     }`}
                     {...register("imageXPath")}
                   />
                   {errors.imageXPath && (
-                    <span className="text-error text-xs mt-1">
-                      {errors.imageXPath.message}
-                    </span>
+                    <span className="text-error text-xs">{errors.imageXPath.message}</span>
                   )}
                 </div>
-
                 <div className="space-y-2">
-                  <label className="label pb-1">
-                    <span className="label-text text-sm font-medium">
-                      Image Cleanup Regex
-                    </span>
-                  </label>
+                  <label className="text-sm font-medium text-base-content/70">Image Cleanup Regex</label>
                   <input
                     type="text"
                     placeholder="https?://.*"
-                    className="input input-bordered w-full h-11 focus:outline-none focus:ring-0 focus:border-base-300"
+                    className="input input-bordered w-full bg-base-200 border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300"
                     {...register("imageRegex")}
                   />
                 </div>
@@ -237,22 +196,16 @@ const Page = () => {
 
               {/* Currency */}
               <div className="space-y-3">
-                <label className="label pb-1">
-                  <span className="label-text font-semibold text-base">
-                    Currency
-                  </span>
-                </label>
+                <SectionHeader icon={FaGlobe} title="Currency" />
                 <select
-                  className={`select select-bordered w-full h-11 focus:outline-none focus:ring-0 focus:border-base-300 ${
-                    errors.currency ? "select-error" : ""
+                  className={`select select-bordered w-full bg-base-200 border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300 ${
+                    errors.currency ? "border-error/50" : ""
                   }`}
                   {...register("currency")}
                   disabled={currenciesLoading}
                 >
                   <option value="">
-                    {currenciesLoading
-                      ? "Loading currencies..."
-                      : "Select a currency"}
+                    {currenciesLoading ? "Loading currencies..." : "Select a currency"}
                   </option>
                   {currencies?.map((c) => (
                     <option key={c.id} value={c.id}>
@@ -261,42 +214,35 @@ const Page = () => {
                   ))}
                 </select>
                 {errors.currency && (
-                  <span className="text-error text-xs mt-1">
-                    {errors.currency.message}
-                  </span>
+                  <span className="text-error text-xs">{errors.currency.message}</span>
                 )}
               </div>
 
               {/* Library */}
               <div className="space-y-3">
-                <label className="label pb-1">
-                  <span className="label-text font-semibold text-base">
-                    Library Type
-                  </span>
-                </label>
+                <SectionHeader icon={FaWrench} title="Library Type" />
                 <select
-                  className={`select select-bordered w-full h-11 focus:outline-none focus:ring-0 focus:border-base-300 ${
-                    errors.lib ? "select-error" : ""
+                  className={`select select-bordered w-full bg-base-200 border-white/10 focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300 ${
+                    errors.lib ? "border-error/50" : ""
                   }`}
                   {...register("lib")}
                 >
-                  <option value="playwright">Playwright</option>
-                  <option value="requests">Requests</option>
+                  <option value="playwright">Playwright (JavaScript rendering)</option>
+                  <option value="requests">Requests (Fast, static pages)</option>
                 </select>
                 {errors.lib && (
-                  <span className="text-error text-xs mt-1">
-                    {errors.lib.message}
-                  </span>
+                  <span className="text-error text-xs">{errors.lib.message}</span>
                 )}
               </div>
 
               {/* Submit */}
-              <div className="text-center pt-6">
+              <div className="pt-4">
                 <button
                   type="submit"
-                  className="btn btn-primary w-full sm:w-auto px-8 py-3 text-base"
+                  className="btn btn-primary w-full gap-2"
                   disabled={addScraper.isPending}
                 >
+                  <FaSave className="w-4 h-4" />
                   {addScraper.isPending ? "Saving..." : "Save Scraper"}
                 </button>
               </div>
