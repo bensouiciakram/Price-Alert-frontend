@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { FaArrowTrendDown, FaExternalLinkAlt } from "react-icons/fa6";
+import { FaArrowTrendDown, FaArrowUpRightFromSquare } from "react-icons/fa6";
 
 interface AlertBoxProps {
   productId: number;
@@ -49,7 +49,7 @@ const AlertBox: React.FC<AlertBoxProps> = ({
 
           {/* Website */}
           <div className="flex items-center gap-2 text-xs text-base-content/40">
-            <FaExternalLinkAlt className="w-3 h-3" />
+            <FaArrowUpRightFromSquare className="w-3 h-3" />
             <span className="truncate">{websiteUrl}</span>
           </div>
 

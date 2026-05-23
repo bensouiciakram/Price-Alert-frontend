@@ -21,7 +21,7 @@ const Page = () => {
     Array.isArray(product?.alerts) && product.alerts.length
       ? product.alerts[0]
       : undefined;
-  const { data: alert, isLoading: alertLoading } = useAlertById(firstAlertId);
+  const { data: alert } = useAlertById(firstAlertId);
   const updateAlert = useUpdateAlert();
 
   const { data: allPriceHistory } = usePriceHistory();
@@ -141,7 +141,7 @@ const Page = () => {
                 <div className="p-4 rounded-xl bg-base-300/30 border border-white/5">
                   <p className="text-xs text-base-content/40 uppercase tracking-wider mb-1">Current Price</p>
                   <p className="font-mono-price text-4xl font-bold text-success">
-                    {currencySymbol} {currentPrice?.toFixed(2)}
+                    {currencySymbol} {currentPrice ? Number(currentPrice).toFixed(2) : "—"}
                   </p>
                 </div>
 
@@ -155,7 +155,7 @@ const Page = () => {
                   {!isEditing ? (
                     <div className="flex items-center justify-between p-4 rounded-xl bg-base-300/30 border border-white/5">
                       <p className="font-mono-price text-xl font-semibold">
-                        {currencySymbol} {alert?.threshold?.toFixed(2)}
+                        {currencySymbol} {alert?.threshold ? Number(alert.threshold).toFixed(2) : "—"}
                       </p>
                       <button
                         onClick={startEdit}

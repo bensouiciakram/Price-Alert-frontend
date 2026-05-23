@@ -1,5 +1,5 @@
 import React from "react";
-import { FaKey, FaBell, FaUser, FaRegenerate } from "react-icons/fa6";
+import { FaKey, FaBell, FaUser } from "react-icons/fa6";
 
 const Page = () => {
   return (

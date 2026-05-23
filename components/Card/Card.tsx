@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import Link from "next/link";
 import { ProductMetaData, Website } from "@/lib";
@@ -29,7 +30,7 @@ const Card = ({ product_id, meta, website }: Props) => {
               alt={meta.title || "Product"}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               loading="lazy"
-            />
+            /> 
           ) : (
             <div className="w-full h-full flex items-center justify-center">
               <span className="text-base-content/20 text-sm">No Image</span>

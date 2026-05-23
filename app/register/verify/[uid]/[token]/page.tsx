@@ -18,7 +18,7 @@ const VerifyAccountPage = () => {
         setStatus("success");
         // Redirect after 2 seconds
         setTimeout(() => router.push("/login"), 2000);
-      } catch (error) {
+      } catch {
         setStatus("error");
       }
     };

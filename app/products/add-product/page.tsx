@@ -69,23 +69,6 @@ const Page = () => {
     }
   };
 
-  const formFields = [
-    {
-      name: "url" as const,
-      label: "Product URL",
-      icon: FaLink,
-      type: "url",
-      placeholder: "https://www.amazon.com/...",
-    },
-    {
-      name: "threshold" as const,
-      label: "Desired Price",
-      icon: FaTag,
-      type: "number",
-      placeholder: "e.g. 450.00",
-    },
-  ];
-
   return (
     <div className="min-h-screen bg-base-200">
       <section className="max-w-2xl mx-auto py-12 sm:py-16 px-4 sm:px-6">

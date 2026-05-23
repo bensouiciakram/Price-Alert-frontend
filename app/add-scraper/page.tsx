@@ -70,7 +70,7 @@ const Page = () => {
     }
   };
 
-  const SectionHeader = ({ icon: Icon, title }: { icon: any; title: string }) => (
+  const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
     <div className="flex items-center gap-2 mb-4 pb-3 border-b border-white/5">
       <Icon className="w-4 h-4 text-primary" />
       <h3 className="font-semibold text-base-content">{title}</h3>

@@ -40,7 +40,7 @@ export const useUpdateCurrency = () => {
   return useMutation({
     mutationFn: ({ id, data }: { id: number; data: Partial<Currency> }) =>
       updateCurrency(id, data),
-    onSuccess: (updatedCurrency) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: CURRENCY_KEYS.all });
     },
   });

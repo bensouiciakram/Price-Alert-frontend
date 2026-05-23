@@ -31,8 +31,9 @@ export default function PriceHistoryChart({ data, currencySymbol = "$" }: Props)
     return `${date}\n${time?.slice(0, 5) || ""}`;
   };
 
-  const minPrice = Math.min(...displayedData.map((d) => d.price));
-  const maxPrice = Math.max(...displayedData.map((d) => d.price));
+  const prices = displayedData.map((d) => Number(d.price));
+  const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
   const priceRange = maxPrice - minPrice;
   const yMin = minPrice - priceRange * 0.1;
   const yMax = maxPrice + priceRange * 0.1;

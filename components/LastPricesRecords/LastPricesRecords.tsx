@@ -19,10 +19,12 @@ const LastPricesRecords = ({ data, currencySymbol = "$" }: Props) => {
     );
   }
 
-  const getChange = (current: number, previous: number | undefined) => {
+  const getChange = (current: string, previous: string | undefined) => {
     if (previous === undefined) return null;
-    const diff = current - previous;
-    const percent = ((diff / previous) * 100).toFixed(2);
+    const curr = Number(current);
+    const prev = Number(previous);
+    const diff = curr - prev;
+    const percent = ((diff / prev) * 100).toFixed(2);
     return { diff, percent, isUp: diff > 0 };
   };
 
@@ -60,7 +62,7 @@ const LastPricesRecords = ({ data, currencySymbol = "$" }: Props) => {
                       {record.checked_at}
                     </td>
                     <td className="py-3 text-sm font-mono-price text-base-content text-right">
-                      {currencySymbol}{record.price.toFixed(2)}
+                      {currencySymbol}{Number(record.price).toFixed(2)}
                     </td>
                     <td className="py-3 text-right">
                       {change ? (
