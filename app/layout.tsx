@@ -42,7 +42,7 @@ export default function RootLayout({
           className={`${dmSerif.variable} ${jakartaSans.variable} ${jetbrainsMono.variable} antialiased font-sans bg-base-200 text-base-content min-h-screen`}
         >
           <Navbar />
-          <main>{children}</main>
+          <main className="pt-16">{children}</main>
         </body>
       </html>
     </QueryProvider>
