@@ -2,51 +2,51 @@
 import React from "react";
 import Link from "next/link";
 import { useAuthStatus } from "@/lib/hooks/useAuth";
+import { FaUserPlus } from "react-icons/fa6";
 
 const SignUp = () => {
   const { data, isLoading } = useAuthStatus();
   const loggedIn = data?.isAuthenticated ?? false;
 
-  // While loading, you can return nothing or a small skeleton
   if (isLoading) return null;
-
-  if (loggedIn) return null; // 🔹 Hide SignUp if user is already logged in
+  if (loggedIn) return null;
 
   return (
-    <div className="bg-gray-100 px-4 sm:px-6 lg:px-8 py-12">
-      <div className="max-w-2xl mx-auto text-center">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
-          Create Your Account
-        </h1>
+    <section className="relative py-20 sm:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-base-200 via-base-300/30 to-base-200" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl" />
 
-        <p className="mt-4 text-base text-gray-600">
-          To access our platform, please register with your{" "}
-          <span className="font-semibold">username</span>,{" "}
-          <span className="font-semibold">email</span>, and{" "}
-          <span className="font-semibold">password</span>. This will allow you
-          to securely log in and start using our services.
-        </p>
-
-        <div className="mt-6">
-          <Link
-            href="/register"
-            className="bg-primary text-white rounded-md px-6 py-3 text-base font-semibold hover:bg-primary/90"
-          >
-            Create Account
-          </Link>
+      <div className="relative z-10 max-w-2xl mx-auto text-center animate-fade-in-up">
+        <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-primary/10 flex items-center justify-center">
+          <FaUserPlus className="w-8 h-8 text-primary" />
         </div>
 
-        <p className="mt-4 text-sm text-gray-500">
-          Already have an account?{" "}
+        <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-base-content mb-5 leading-tight">
+          Start Saving Today
+        </h2>
+
+        <p className="text-base-content/60 text-lg leading-relaxed mb-8 max-w-lg mx-auto">
+          Create your free account to track unlimited products and receive instant price drop alerts via Telegram or email.
+        </p>
+
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link
+            href="/register"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-content font-semibold rounded-xl hover:brightness-110 transition-all duration-300 shadow-xl shadow-primary/25 text-lg"
+          >
+            <FaUserPlus className="w-5 h-5" />
+            Create Free Account
+          </Link>
           <Link
             href="/login"
-            className="font-semibold text-primary hover:underline"
+            className="text-base-content/70 hover:text-base-content font-medium transition-colors duration-300"
           >
-            Log in
+            Already have an account? <span className="text-primary hover:underline">Log in</span>
           </Link>
-        </p>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
