@@ -75,11 +75,7 @@ export const useLogout = () => {
   });
 };
 
-export const isLoggedIn = (): boolean => {
-  if (typeof window === "undefined") return false; // avoid SSR issues
-  const token = localStorage.getItem("authToken");
-  return !!token;
-};
+export { isLoggedIn } from "@/lib/utils";
 
 export const useAuthStatus = () => {
   return useQuery({

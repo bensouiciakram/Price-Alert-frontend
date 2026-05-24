@@ -1,5 +1,6 @@
 import React from "react";
 import { FaKey, FaBell, FaUser } from "react-icons/fa6";
+import { NOTIFICATION_PREFERENCES } from "@/lib/constants";
 
 const Page = () => {
   return (
@@ -50,7 +51,7 @@ const Page = () => {
                 <h3 className="font-semibold text-base-content">Notification Preferences</h3>
               </div>
               <div className="space-y-3">
-                {["Email alerts", "Slack alerts", "Telegram alerts"].map((label, i) => (
+                {NOTIFICATION_PREFERENCES.map((label, i) => (
                   <label
                     key={label}
                     className="flex items-center gap-3 p-3 rounded-xl bg-base-300/20 border border-white/5 cursor-pointer hover:bg-white/[0.02] transition-colors duration-200"

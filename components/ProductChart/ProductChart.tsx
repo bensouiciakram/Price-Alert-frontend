@@ -9,6 +9,7 @@ import {
   CartesianGrid,
 } from "recharts";
 import { PriceHistory } from "@/lib";
+import { formatLabel } from "@/lib/utils";
 
 interface Props {
   data: PriceHistory[] | undefined;
@@ -25,11 +26,6 @@ export default function PriceHistoryChart({ data, currencySymbol = "$" }: Props)
   }
 
   const displayedData = data.slice(-30);
-
-  const formatLabel = (value: string) => {
-    const [date, time] = value.split(" ");
-    return `${date}\n${time?.slice(0, 5) || ""}`;
-  };
 
   const prices = displayedData.map((d) => Number(d.price));
   const minPrice = Math.min(...prices);

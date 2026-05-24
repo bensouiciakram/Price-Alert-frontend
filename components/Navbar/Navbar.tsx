@@ -7,6 +7,8 @@ import { CiMenuBurger } from "react-icons/ci";
 import { IoClose } from "react-icons/io5";
 import { useLogout, useAuthStatus } from "@/lib/hooks/useAuth";
 import { useRouter } from "next/navigation";
+import { isActive } from "@/lib/utils";
+import { NAV_LINKS } from "@/lib/constants";
 
 const Navbar = () => {
   const router = useRouter();
@@ -25,7 +27,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [pathname]);
@@ -39,17 +40,7 @@ const Navbar = () => {
     }
   };
 
-  const navLinks = [
-    { href: "/products", label: "Products" },
-    { href: "/products/alerts", label: "Alerts" },
-  ];
-
-  const isActive = (href: string) => {
-    if (href === "/products") {
-      return pathname === href || pathname?.startsWith("/products/");
-    }
-    return pathname === href;
-  };
+  const isActiveLink = (href: string) => isActive(href, pathname);
 
   return (
     <>
@@ -62,11 +53,7 @@ const Navbar = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <Link
-              href="/"
-              className="flex items-center gap-2 group"
-            >
+            <Link href="/" className="flex items-center gap-2 group">
               <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-primary/40 transition-shadow duration-300">
                 <svg
                   className="w-4 h-4 text-primary-content"
@@ -87,14 +74,13 @@ const Navbar = () => {
               </span>
             </Link>
 
-            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-1">
-              {navLinks.map((link) => (
+              {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={`relative px-4 py-2 text-sm font-medium transition-colors duration-300 rounded-lg group ${
-                    isActive(link.href)
+                    isActiveLink(link.href)
                       ? "text-primary"
                       : "text-base-content/70 hover:text-base-content"
                   }`}
@@ -102,7 +88,7 @@ const Navbar = () => {
                   {link.label}
                   <span
                     className={`absolute bottom-1 left-4 right-4 h-0.5 bg-primary rounded-full transition-all duration-300 ${
-                      isActive(link.href)
+                      isActiveLink(link.href)
                         ? "opacity-100 scale-x-100"
                         : "opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100"
                     }`}
@@ -130,7 +116,6 @@ const Navbar = () => {
               )}
             </div>
 
-            {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden p-2 rounded-lg hover:bg-white/5 transition-colors duration-300"
@@ -146,7 +131,6 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
       <div
         className={`fixed inset-0 z-40 md:hidden transition-all duration-500 ${
           mobileMenuOpen
@@ -154,31 +138,27 @@ const Navbar = () => {
             : "opacity-0 pointer-events-none"
         }`}
       >
-        {/* Backdrop */}
         <div
           className="absolute inset-0 bg-black/60 backdrop-blur-sm"
           onClick={() => setMobileMenuOpen(false)}
         />
 
-        {/* Menu Panel */}
         <div
           className={`absolute top-16 right-0 bottom-0 w-72 glass-strong border-l border-white/10 transform transition-transform duration-500 ${
             mobileMenuOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
           <div className="p-6 space-y-2">
-            {navLinks.map((link, index) => (
+            {NAV_LINKS.map((link, index) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={`block px-4 py-3 text-base font-medium rounded-lg transition-all duration-300 ${
-                  isActive(link.href)
+                  isActiveLink(link.href)
                     ? "bg-primary/10 text-primary"
                     : "text-base-content/70 hover:text-base-content hover:bg-white/5"
                 }`}
-                style={{
-                  animationDelay: `${index * 0.05}s`,
-                }}
+                style={{ animationDelay: `${index * 0.05}s` }}
               >
                 {link.label}
               </Link>

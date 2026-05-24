@@ -2,25 +2,13 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAddScraper } from "@/lib";
 import { useCurrencies } from "@/lib/hooks";
 import { FaGlobe, FaCode, FaImage, FaBook, FaWrench, FaSave } from "react-icons/fa";
-
-const scraperSchema = z.object({
-  website: z.string().url("Enter a valid URL"),
-  priceXPath: z.string().min(1, "Price XPath is required"),
-  priceRegex: z.string().optional(),
-  titleXPath: z.string().min(1, "Title XPath is required"),
-  titleRegex: z.string().optional(),
-  imageXPath: z.string().min(1, "Image XPath is required"),
-  imageRegex: z.string().optional(),
-  lib: z.enum(["playwright", "requests"]),
-  currency: z.string().min(1, "Currency is required"),
-});
-
-type ScraperFormValues = z.infer<typeof scraperSchema>;
+import { scraperSchema, ScraperFormValues } from "@/lib/schemas";
+import { LIBRARY_OPTIONS } from "@/lib/constants";
+import SectionHeader from "@/components/SectionHeader/SectionHeader";
 
 const Page = () => {
   const {
@@ -69,13 +57,6 @@ const Page = () => {
       alert("Failed to add scraper. Please try again.");
     }
   };
-
-  const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
-    <div className="flex items-center gap-2 mb-4 pb-3 border-b border-white/5">
-      <Icon className="w-4 h-4 text-primary" />
-      <h3 className="font-semibold text-base-content">{title}</h3>
-    </div>
-  );
 
   return (
     <div className="min-h-screen bg-base-200">
@@ -227,8 +208,9 @@ const Page = () => {
                   }`}
                   {...register("lib")}
                 >
-                  <option value="playwright">Playwright (JavaScript rendering)</option>
-                  <option value="requests">Requests (Fast, static pages)</option>
+                  {LIBRARY_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
                 </select>
                 {errors.lib && (
                   <span className="text-error text-xs">{errors.lib.message}</span>

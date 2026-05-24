@@ -2,9 +2,10 @@
 
 import React from "react";
 import { useProducts } from "@/lib/hooks/useProducts";
-import { isLoggedIn } from "@/lib/hooks/useAuth";
+import { isLoggedIn } from "@/lib/utils";
 import Card from "@/components/Card/Card";
 import { FaShoppingBag } from "react-icons/fa";
+import { SkeletonGrid } from "@/components/SkeletonCard/SkeletonCard";
 
 const ProductsPreview = () => {
   const { data: products, isLoading, isError } = useProducts();
@@ -33,18 +34,7 @@ const ProductsPreview = () => {
     return (
       <section className="py-20 sm:py-28 px-4 sm:px-8 lg:px-16">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="card bg-base-100 border border-white/5 rounded-2xl overflow-hidden">
-                <div className="card-body space-y-4">
-                  <div className="h-6 w-3/4 skeleton-shimmer rounded" />
-                  <div className="h-4 w-1/2 skeleton-shimmer rounded" />
-                  <div className="h-8 w-1/3 skeleton-shimmer rounded" />
-                  <div className="h-4 w-2/3 skeleton-shimmer rounded" />
-                </div>
-              </div>
-            ))}
-          </div>
+          <SkeletonGrid count={6} columns={3} />
         </div>
       </section>
     );

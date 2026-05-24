@@ -5,19 +5,11 @@ import React from "react";
 import { useWebsites } from "@/lib/hooks/useWebsites";
 import { Website } from "@/lib";
 import { FaArrowRight } from "react-icons/fa6";
+import { extractDomain } from "@/lib/utils";
 
 const CallToAction = () => {
   const { data, isLoading, isError } = useWebsites();
   const websites: Website[] = data ?? [];
-
-  const extractDomain = (url: string) => {
-    try {
-      const { hostname } = new URL(url);
-      return hostname.replace("www.", "");
-    } catch {
-      return url;
-    }
-  };
 
   return (
     <section className="relative overflow-hidden hero-gradient min-h-[90vh] flex items-center justify-center px-4 sm:px-6 lg:px-8">

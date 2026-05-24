@@ -4,6 +4,7 @@ import React from "react";
 import { useAlertsMet, useWebsites } from "@/lib";
 import AlertBox from "@/components/AlertMetBox/AlertMetBox";
 import { FaBell, FaCheckCircle } from "react-icons/fa";
+import EmptyState from "@/components/EmptyState/EmptyState";
 
 export default function AlertsPage() {
   const {
@@ -31,13 +32,11 @@ export default function AlertsPage() {
   if (alertsError || websitesError) {
     return (
       <div className="min-h-screen bg-base-200 flex items-center justify-center px-4">
-        <div className="text-center animate-fade-in-up">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-error/10 flex items-center justify-center">
-            <FaBell className="w-8 h-8 text-error" />
-          </div>
-          <h2 className="font-serif text-2xl text-base-content mb-2">Failed to Load</h2>
-          <p className="text-base-content/50">Could not load your alerts. Please try again.</p>
-        </div>
+        <EmptyState
+          icon={FaBell}
+          title="Failed to Load"
+          description="Could not load your alerts. Please try again."
+        />
       </div>
     );
   }
@@ -45,15 +44,11 @@ export default function AlertsPage() {
   if (!alertMets || alertMets.length === 0) {
     return (
       <div className="min-h-screen bg-base-200 flex items-center justify-center px-4">
-        <div className="text-center animate-fade-in-up">
-          <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-base-300 flex items-center justify-center">
-            <FaCheckCircle className="w-10 h-10 text-success/60" />
-          </div>
-          <h2 className="font-serif text-3xl text-base-content mb-3">All Clear!</h2>
-          <p className="text-base-content/50 max-w-md mx-auto text-lg">
-            No price drop alerts yet. We will notify you as soon as a product hits your target price.
-          </p>
-        </div>
+        <EmptyState
+          icon={FaCheckCircle}
+          title="All Clear!"
+          description="No price drop alerts yet. We will notify you as soon as a product hits your target price."
+        />
       </div>
     );
   }
@@ -80,7 +75,7 @@ export default function AlertsPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {alertMets.map((alert, index) => {
             const website = websites?.find((w) => w.url === alert.website_url);
-            const currencySymbol = website?.currency.currency_symbol || "";
+            const currencySymbol = website?.currency?.currency_symbol ?? "";
 
             return (
               <div

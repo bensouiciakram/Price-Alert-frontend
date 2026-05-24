@@ -2,28 +2,11 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAddProduct } from "../../../lib";
 import { FaLink, FaTag, FaClock, FaPaperPlane, FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
-
-const addProductSchema = z.object({
-  url: z.string().url("Enter a valid URL"),
-  threshold: z
-    .string()
-    .min(1, "Desired price is required")
-    .refine((v) => !Number.isNaN(Number(v)) && Number(v) > 0, {
-      message: "Enter a valid positive number",
-    }),
-  freq: z.enum(["", "3600", "14400", "86400"]).refine((val) => val !== "", {
-    message: "Please select a valid frequency",
-  }),
-  channel: z
-    .enum(["telegram", "gmail"])
-    .refine((val) => !!val, { message: "Please select a channel" }),
-});
-
-type AddProductFormValues = z.infer<typeof addProductSchema>;
+import { addProductSchema, AddProductFormValues } from "@/lib/schemas";
+import { FREQUENCY_OPTIONS, CHANNEL_OPTIONS } from "@/lib/constants";
 
 const Page = () => {
   const {
@@ -154,9 +137,9 @@ const Page = () => {
                     {...register("freq")}
                   >
                     <option value="">Select frequency</option>
-                    <option value="3600">Every hour</option>
-                    <option value="14400">Every 4 hours</option>
-                    <option value="86400">Daily</option>
+                    {FREQUENCY_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
                   </select>
                   {errors.freq && (
                     <span className="text-error text-xs">{errors.freq.message}</span>
@@ -176,8 +159,9 @@ const Page = () => {
                   }`}
                   {...register("channel")}
                 >
-                  <option value="telegram">Telegram</option>
-                  <option value="gmail">Gmail</option>
+                  {CHANNEL_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
                 </select>
                 {errors.channel && (
                   <span className="text-error text-xs">{errors.channel.message}</span>

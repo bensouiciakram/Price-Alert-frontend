@@ -1,13 +1,14 @@
 import React from "react";
 import { PriceHistory } from "@/lib";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
+import { getChange } from "@/lib/utils";
 
 interface Props {
   data: PriceHistory[] | undefined;
   currencySymbol?: string;
 }
 
-const LastPricesRecords = ({ data, currencySymbol = "$" }: Props) => {
+export default function LastPricesRecords({ data, currencySymbol = "$" }: Props) {
   if (!data || data.length === 0) {
     return (
       <div className="card bg-base-100 border border-white/5 rounded-2xl">
@@ -18,15 +19,6 @@ const LastPricesRecords = ({ data, currencySymbol = "$" }: Props) => {
       </div>
     );
   }
-
-  const getChange = (current: string, previous: string | undefined) => {
-    if (previous === undefined) return null;
-    const curr = Number(current);
-    const prev = Number(previous);
-    const diff = curr - prev;
-    const percent = ((diff / prev) * 100).toFixed(2);
-    return { diff, percent, isUp: diff > 0 };
-  };
 
   return (
     <div className="card bg-base-100 border border-white/5 rounded-2xl overflow-hidden">
@@ -91,6 +83,4 @@ const LastPricesRecords = ({ data, currencySymbol = "$" }: Props) => {
       </div>
     </div>
   );
-};
-
-export default LastPricesRecords;
+}

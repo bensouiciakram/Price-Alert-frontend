@@ -1,0 +1,4 @@
+1- things like formFields list should goes into some constants.ts file 
+2- zod validation schemas should goes into schemas.ts 
+3- we should create utils.ts file and put utilities function across the components there 
+4- i think there are some repetitive tsx part across the component that can be extracted into standalone component for re-usability ?

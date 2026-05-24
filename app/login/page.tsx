@@ -3,18 +3,11 @@
 import React from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLogin } from "@/lib/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { FaUser, FaLock, FaArrowRight } from "react-icons/fa";
-
-const loginSchema = z.object({
-  username: z.string().min(1, "Username is required"),
-  password: z.string().min(1, "Password is required"),
-});
-
-type LoginFormValues = z.infer<typeof loginSchema>;
+import { loginSchema, LoginFormValues } from "@/lib/schemas";
 
 const Page = () => {
   const router = useRouter();

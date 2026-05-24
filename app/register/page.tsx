@@ -2,26 +2,12 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRegister } from "@/lib/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FaUser, FaEnvelope, FaLock, FaUserPlus, FaArrowRight } from "react-icons/fa";
-
-const signupSchema = z
-  .object({
-    username: z.string().min(3, "Username must be at least 3 characters"),
-    email: z.string().email("Invalid email address"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords must match",
-    path: ["confirmPassword"],
-  });
-
-type SignupFormValues = z.infer<typeof signupSchema>;
+import { signupSchema, SignupFormValues } from "@/lib/schemas";
 
 const Page = () => {
   const router = useRouter();
