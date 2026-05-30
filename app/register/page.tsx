@@ -165,22 +165,13 @@ const Page = () => {
 
             <div className="h-px bg-white/5" />
 
-            {/* Telegram Widget */}
-            <div className="text-center space-y-3">
+            {/* Gmail Info */}
+            <div className="text-center space-y-2">
               <p className="text-sm text-base-content/50">
-                Connect Telegram for price alerts:
+                Connect your Gmail for price alerts:
               </p>
-              <script
-                async
-                src="https://telegram.org/js/telegram-widget.js?22"
-                data-telegram-login="YOUR_TELEGRAM_BOT_USERNAME"
-                data-size="large"
-                data-userpic="false"
-                data-auth-url="https://your-backend-domain.com/api/connect/telegram/"
-                data-request-access="write"
-              />
               <p className="text-xs text-base-content/30">
-                Only links your Telegram for alert delivery.
+                You'll receive price drop notifications directly to your email.
               </p>
             </div>
 
