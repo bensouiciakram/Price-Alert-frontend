@@ -171,7 +171,7 @@ const Page = () => {
                 Connect your Gmail for price alerts:
               </p>
               <p className="text-xs text-base-content/30">
-                You'll receive price drop notifications directly to your email.
+                You&apos;ll receive price drop notifications directly to your email.
               </p>
             </div>
 
